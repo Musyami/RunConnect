@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>RunConnect - Komunitas Lari Surabaya</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a0f1e;--navy2:#111827;--navy3:#1a2540;
+  --blue:#1d6be8;--blue2:#3b82f6;--blue3:#60a5fa;
+  --lime:#84cc16;--lime2:#a3e635;
+  --gray300:#cbd5e1;--gray400:#94a3b8;--gray600:#475569;
+  --card-bg:#111827;--card-border:rgba(255,255,255,0.08);
+  --shadow:0 4px 24px rgba(0,0,0,0.4);--radius:14px;--radius-sm:8px;
+  --tr:0.25s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:#fff;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Space Grotesk',sans-serif}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--navy2)}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,30,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(29,107,232,0.2)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:68px}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;transition:opacity var(--tr)}
+.nav-logo:hover{opacity:0.85}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--blue),var(--lime));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.logo-text{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px}
+.logo-text span{color:var(--lime2)}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links li a{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;color:var(--gray300);transition:var(--tr);cursor:pointer;border:none;background:none}
+.nav-links li a:hover{color:#fff;background:rgba(255,255,255,0.06)}
+.nav-links li a.active{color:var(--lime2);background:rgba(132,204,22,0.1)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:var(--tr)}
+.mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;z-index:999;background:var(--navy2);border-bottom:1px solid rgba(255,255,255,0.08);padding:16px;flex-direction:column;gap:4px}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:12px 16px;border-radius:var(--radius-sm);font-size:15px;font-weight:500;color:var(--gray300);cursor:pointer;transition:var(--tr)}
+.mobile-nav a.active{color:var(--lime2)}
+.page{display:none;padding-top:68px;min-height:100vh}
+.page.active{display:block}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 50%,#0d1b35 100%);padding:80px 24px 100px;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(29,107,232,0.25) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;opacity:0.04;background-image:linear-gradient(var(--blue) 1px,transparent 1px),linear-gradient(90deg,var(--blue) 1px,transparent 1px);background-size:60px 60px}
+.hero-dots{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hero-dot{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--blue3);opacity:0.3}
+.hero-content{position:relative;max-width:760px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(132,204,22,0.1);border:1px solid rgba(132,204,22,0.3);color:var(--lime2);padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;letter-spacing:0.5px;margin-bottom:20px}
+.hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;line-height:1.1;margin-bottom:20px;color:#fff}
+.hero h1 em{font-style:normal;color:var(--lime2)}
+.hero p{font-size:16px;color:var(--gray400);line-height:1.7;margin-bottom:32px;max-width:580px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--lime),var(--lime2));color:var(--navy);padding:12px 26px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;border:none;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(132,204,22,0.5)}
+.btn-secondary{background:rgba(255,255,255,0.06);color:#fff;padding:12px 26px;border-radius:var(--radius-sm);font-weight:600;font-size:14px;border:1px solid rgba(255,255,255,0.12);cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{background:rgba(255,255,255,0.1)}
+.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:50px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:2rem;font-weight:800;color:var(--lime2)}
+.stat-label{font-size:12px;color:var(--gray400);margin-top:2px}
+
+/* SEARCH */
+.search-section{max-width:1280px;margin:-32px auto 0;padding:0 24px;position:relative;z-index:10}
+.search-box{background:var(--navy3);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow)}
+.search-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.search-input-wrap{flex:1;min-width:200px;position:relative}
+.search-input-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--gray400);fill:none;stroke-width:2}
+.search-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:10px 14px 10px 38px;border-radius:var(--radius-sm);font-size:14px;font-family:'Inter',sans-serif;transition:var(--tr)}
+.search-input::placeholder{color:var(--gray400)}
+.search-input:focus{outline:none;border-color:var(--blue2);background:rgba(255,255,255,0.08)}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-select{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:9px 12px;border-radius:var(--radius-sm);font-size:13px;font-family:'Inter',sans-serif;cursor:pointer}
+.filter-select:focus{outline:none;border-color:var(--blue2)}
+.filter-select option{background:var(--navy2);color:#fff}
+.btn-search{background:var(--blue);color:#fff;padding:9px 20px;border-radius:var(--radius-sm);border:none;font-weight:600;font-size:13px;cursor:pointer;transition:var(--tr)}
+.btn-search:hover{background:var(--blue2)}
+.btn-clear{background:transparent;color:var(--gray400);padding:9px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.1);font-size:13px;cursor:pointer;transition:var(--tr)}
+.btn-clear:hover{color:#fff}
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+.section{padding:48px 0}
+.section-label{font-size:12px;font-weight:600;letter-spacing:1px;color:var(--lime2);text-transform:uppercase;margin-bottom:6px;display:block}
+.section-title{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700}
+.section-sub{color:var(--gray400);font-size:14px;margin-top:6px}
+.section-header{margin-bottom:28px}
+
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.cat-tab,.area-tab{padding:8px 18px;border-radius:50px;font-size:13px;font-weight:500;border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:var(--tr);background:transparent;color:var(--gray300)}
+.cat-tab:hover{border-color:var(--blue2);color:#fff}
+.cat-tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.area-tab:hover{border-color:var(--lime);color:var(--lime2)}
+.area-tab.active{background:rgba(132,204,22,0.15);border-color:var(--lime);color:var(--lime2)}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.run-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;transition:var(--tr);cursor:pointer}
+.run-card:hover{border-color:rgba(29,107,232,0.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(29,107,232,0.2)}
+.card-img{height:160px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card-img-bg{position:absolute;inset:0;opacity:0.15}
+.card-color-bar{width:100%;height:4px;position:absolute;bottom:0;left:0}
+.card-badge{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:600}
+.badge-beginner{background:rgba(132,204,22,0.2);color:var(--lime2);border:1px solid rgba(132,204,22,0.3)}
+.badge-intermediate{background:rgba(29,107,232,0.2);color:var(--blue3);border:1px solid rgba(29,107,232,0.3)}
+.badge-advanced{background:rgba(239,68,68,0.2);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+.card-feat-tag{position:absolute;top:12px;right:12px;background:var(--lime);color:var(--navy);padding:4px 8px;border-radius:50px;font-size:10px;font-weight:700}
+.card-custom-tag{position:absolute;top:12px;right:12px;background:rgba(168,85,247,0.85);color:#fff;padding:4px 8px;border-radius:50px;font-size:10px;font-weight:700}
+.card-body{padding:16px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:3px}
+.card-community{font-size:12px;color:var(--blue3);margin-bottom:7px;font-weight:500}
+.card-desc{font-size:12px;color:var(--gray400);line-height:1.6;margin-bottom:12px}
+.card-meta{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px}
+.card-meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gray400)}
+.card-meta-item svg{width:12px;height:12px;flex-shrink:0;stroke:var(--blue3);fill:none;stroke-width:2}
+.card-meta-item strong{color:#fff}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.card-tag{padding:2px 8px;border-radius:50px;font-size:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--gray300)}
+.card-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn-view{flex:1;min-width:80px;padding:8px 10px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.12);background:transparent;color:#fff;font-size:12px;font-weight:500;cursor:pointer;transition:var(--tr)}
+.btn-view:hover{background:rgba(255,255,255,0.08)}
+.btn-map{padding:8px 10px;border-radius:var(--radius-sm);border:1px solid rgba(29,107,232,0.3);background:rgba(29,107,232,0.1);color:var(--blue3);font-size:12px;font-weight:500;cursor:pointer;transition:var(--tr)}
+.btn-map:hover{background:rgba(29,107,232,0.2);border-color:var(--blue2)}
+.btn-join{flex:1;min-width:80px;padding:8px 10px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:var(--tr)}
+.btn-join:hover{opacity:0.9}
+.btn-join.rsvp-done{background:linear-gradient(135deg,var(--lime),var(--lime2));color:var(--navy)}
+
+/* FEATURED */
+.featured-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin}
+.featured-scroll::-webkit-scrollbar{height:4px}
+.feat-card{min-width:260px;background:var(--navy3);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;flex-shrink:0;cursor:pointer;transition:var(--tr);position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--lime))}
+.feat-card:hover{transform:translateY(-3px);border-color:rgba(29,107,232,0.4);box-shadow:0 8px 28px rgba(29,107,232,0.15)}
+.feat-title{font-weight:700;margin-bottom:5px;font-size:14px}
+.feat-date{font-size:12px;color:var(--lime2);margin-bottom:6px;font-weight:500}
+.feat-desc{font-size:12px;color:var(--gray400);line-height:1.5;margin-bottom:10px}
+.feat-chips{display:flex;gap:6px;flex-wrap:wrap}
+.feat-chip{padding:2px 8px;border-radius:50px;font-size:11px;font-weight:500;background:rgba(29,107,232,0.15);border:1px solid rgba(29,107,232,0.3);color:var(--blue3)}
+.no-results{text-align:center;padding:60px 20px;color:var(--gray400)}
+
+/* FAB */
+.add-fab{position:fixed;bottom:28px;right:28px;z-index:900;background:linear-gradient(135deg,var(--lime),var(--lime2));color:var(--navy);border:none;border-radius:50px;padding:12px 22px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(132,204,22,0.4);display:flex;align-items:center;gap:8px;transition:var(--tr)}
+.add-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(132,204,22,0.6)}
+.add-fab svg{width:18px;height:18px;stroke:var(--navy);fill:none;stroke-width:2.5}
+
+/* MAP */
+.map-layout{display:flex;height:calc(100vh - 68px)}
+.map-sidebar{width:360px;min-width:300px;background:var(--navy2);border-right:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;overflow:hidden}
+.map-sbar-hdr{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.map-sbar-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.map-sbar-title{font-size:15px;font-weight:700}
+.map-sbar-count{background:rgba(29,107,232,0.15);color:var(--blue3);border:1px solid rgba(29,107,232,0.3);border-radius:50px;padding:2px 10px;font-size:12px;font-weight:600}
+.map-search-wrap{position:relative}
+.map-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--gray400);fill:none;stroke-width:2}
+.map-search-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 12px 8px 32px;border-radius:var(--radius-sm);font-size:13px;font-family:'Inter',sans-serif}
+.map-search-input:focus{outline:none;border-color:var(--blue2)}
+.map-search-input::placeholder{color:var(--gray400)}
+.map-locs-list{flex:1;overflow-y:auto;padding:10px}
+.map-loc-item{padding:12px;border-radius:var(--radius-sm);border:1px solid transparent;cursor:pointer;transition:var(--tr);margin-bottom:6px}
+.map-loc-item:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08)}
+.map-loc-item.selected{background:rgba(29,107,232,0.1);border-color:rgba(29,107,232,0.3)}
+.map-loc-name{font-size:13px;font-weight:600;margin-bottom:3px}
+.map-loc-addr{font-size:12px;color:var(--gray400);margin-bottom:5px}
+.map-loc-tags{display:flex;gap:5px;flex-wrap:wrap}
+.map-loc-tag{padding:2px 7px;border-radius:50px;font-size:10px;background:rgba(29,107,232,0.15);color:var(--blue3);border:1px solid rgba(29,107,232,0.2)}
+.map-container{flex:1;position:relative}
+#map{width:100%;height:100%}
+.map-info-panel{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(17,24,39,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);padding:10px 18px;font-size:12px;color:var(--gray400);z-index:500;display:flex;align-items:center;gap:8px;white-space:nowrap;pointer-events:none}
+.map-demo-badge{background:rgba(132,204,22,0.1);color:var(--lime2);border:1px solid rgba(132,204,22,0.2);border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600}
+
+/* ROUTES */
+.routes-page{padding-bottom:60px}
+.routes-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);padding:50px 24px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06);position:relative;overflow:hidden}
+.routes-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 100%,rgba(132,204,22,0.1) 0%,transparent 70%)}
+.routes-hero-content{position:relative}
+.routes-hero h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:10px}
+.routes-hero p{color:var(--gray400);font-size:15px}
+.routes-filters{max-width:1280px;margin:0 auto;padding:24px 24px 0}
+.routes-filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.area-tabs{display:flex;gap:8px;flex-wrap:wrap;max-width:1280px;margin:0 auto;padding:16px 24px 0}
+.routes-content{max-width:1280px;margin:0 auto;padding:24px 24px;display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
+.route-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;transition:var(--tr);cursor:pointer}
+.route-card:hover{border-color:rgba(132,204,22,0.3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(132,204,22,0.1)}
+.route-card.selected{border-color:var(--lime);box-shadow:0 0 20px rgba(132,204,22,0.15)}
+.route-card-inner{display:flex}
+.route-card-img{width:120px;min-width:120px;height:120px;background:linear-gradient(135deg,var(--navy3),var(--navy2));display:flex;align-items:center;justify-content:center;position:relative}
+.route-card-body{padding:14px;flex:1}
+.route-card-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.route-card-area{font-size:11px;color:var(--lime2);font-weight:500;margin-bottom:6px}
+.route-meta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.route-meta-item{font-size:11px;color:var(--gray400)}
+.route-meta-item strong{color:#fff}
+.route-card-desc{font-size:11px;color:var(--gray400);line-height:1.5;margin-bottom:8px}
+.route-card-btns{display:flex;gap:6px;flex-wrap:wrap}
+.btn-route{padding:6px 12px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:4px;border:none}
+.btn-rp{background:linear-gradient(135deg,var(--lime),var(--lime2));color:var(--navy)}
+.btn-rp:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-rs{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.15) !important}
+.btn-rs:hover{background:rgba(255,255,255,0.06)}
+.routes-map-panel{background:var(--navy3);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;position:sticky;top:88px}
+.routes-map-header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.routes-map-header span{font-size:11px;color:var(--gray400);font-weight:400}
+#routesMap{height:380px}
+.routes-map-info{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);font-size:12px;color:var(--gray400)}
+.ri-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.ri-val{color:var(--lime2);font-weight:600}
+
+/* ABOUT */
+.about-page{padding-bottom:80px}
+.about-hero{background:linear-gradient(135deg,var(--navy3) 0%,#0d1b35 100%);padding:70px 24px;text-align:center;position:relative;overflow:hidden}
+.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 50%,rgba(29,107,232,0.15) 0%,transparent 70%)}
+.about-hero-content{position:relative;max-width:700px;margin:0 auto}
+.about-logo-big{width:70px;height:70px;background:linear-gradient(135deg,var(--blue),var(--lime));border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(29,107,232,0.4)}
+.about-logo-big svg{width:38px;height:38px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.about-hero h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:12px}
+.about-hero p{color:var(--gray400);font-size:15px;line-height:1.7}
+.about-section{max-width:1280px;margin:0 auto;padding:60px 24px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.about-block h3{font-size:1.2rem;font-weight:700;margin-bottom:14px}
+.about-block p{color:var(--gray400);line-height:1.8;font-size:14px}
+.vision-box{background:linear-gradient(135deg,rgba(29,107,232,0.1),rgba(132,204,22,0.05));border:1px solid rgba(29,107,232,0.2);border-radius:var(--radius);padding:22px;margin-top:16px}
+.vision-box p{color:var(--gray300);font-size:14px;line-height:1.7;font-style:italic}
+.mission-list{list-style:none;margin-top:4px}
+.mission-list li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:var(--gray300);line-height:1.5}
+.mission-list li:last-child{border-bottom:none}
+.mission-icon{width:24px;height:24px;min-width:24px;background:rgba(132,204,22,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.mission-icon svg{width:12px;height:12px;stroke:var(--lime2);fill:none;stroke-width:2.5}
+.purpose-box{background:var(--navy3);border:1px solid var(--card-border);border-radius:var(--radius);padding:30px;text-align:center;margin-top:40px}
+.purpose-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.purpose-box p{color:var(--gray400);font-size:14px;line-height:1.7}
+.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1280px;margin:0 auto;padding:0 24px 60px}
+.about-stat-card{background:var(--navy3);border:1px solid var(--card-border);border-radius:var(--radius);padding:22px;text-align:center;transition:var(--tr)}
+.about-stat-card:hover{border-color:rgba(132,204,22,0.3);transform:translateY(-2px)}
+.about-stat-num{font-size:1.8rem;font-weight:800;color:var(--lime2);margin-bottom:4px}
+.about-stat-label{font-size:13px;color:var(--gray400)}
+.contact-section{max-width:1280px;margin:0 auto;padding:0 24px 60px}
+.contact-title{font-size:1.4rem;font-weight:700;margin-bottom:20px}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.contact-card{background:var(--navy3);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;display:flex;align-items:center;gap:12px;transition:var(--tr);cursor:pointer}
+.contact-card:hover{border-color:rgba(29,107,232,0.4);transform:translateY(-2px);box-shadow:var(--shadow)}
+.contact-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-icon svg{width:20px;height:20px;fill:none;stroke-width:2;stroke-linecap:round}
+.contact-label{font-size:11px;color:var(--gray400);margin-bottom:2px}
+.contact-val{font-size:13px;font-weight:600}
+
+/* TEAM SECTION */
+.team-section{max-width:1280px;margin:0 auto;padding:0 24px 60px}
+.team-title{font-size:1.4rem;font-weight:700;margin-bottom:8px}
+.team-sub{font-size:14px;color:var(--gray400);margin-bottom:24px}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.team-card{background:var(--navy3);border:1px solid var(--card-border);border-radius:var(--radius);padding:22px;text-align:center;transition:var(--tr)}
+.team-card:hover{border-color:rgba(29,107,232,0.3);transform:translateY(-2px)}
+.team-avatar{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff}
+.team-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.team-role{font-size:12px;color:var(--blue3)}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--navy2);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);max-width:560px;width:100%;max-height:88vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.25s ease}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-img{height:140px;background:linear-gradient(135deg,var(--navy3),var(--navy));display:flex;align-items:center;justify-content:center;border-radius:var(--radius) var(--radius) 0 0;position:relative}
+.modal-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.5);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1}
+.modal-close:hover{background:rgba(0,0,0,0.8)}
+.modal-body{padding:22px}
+.modal-title{font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.modal-community{font-size:12px;color:var(--blue3);margin-bottom:12px;font-weight:500}
+.modal-desc{color:var(--gray400);font-size:13px;line-height:1.7;margin-bottom:16px}
+.modal-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.modal-detail-item{background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);padding:9px 11px}
+.modal-detail-label{font-size:10px;color:var(--gray400);margin-bottom:2px;text-transform:uppercase;letter-spacing:0.5px}
+.modal-detail-val{font-size:13px;font-weight:600}
+.modal-actions{display:flex;gap:8px}
+.btn-modal-map{flex:1;padding:10px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.12);background:transparent;color:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:var(--tr)}
+.btn-modal-map:hover{background:rgba(255,255,255,0.06)}
+.btn-modal-join{flex:1;padding:10px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:var(--tr)}
+.btn-modal-join:hover{opacity:0.9}
+
+/* FORM MODAL */
+.form-modal{background:var(--navy2);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);max-width:560px;width:100%;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.25s ease}
+.modal-overlay.open .form-modal{transform:translateY(0)}
+.form-header{padding:20px 22px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center}
+.form-header h3{font-size:1.1rem;font-weight:700}
+.form-body{padding:22px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--gray300);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.form-input,.form-select,.form-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 12px;border-radius:var(--radius-sm);font-size:13px;font-family:'Inter',sans-serif;transition:var(--tr)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--blue2);background:rgba(255,255,255,0.08)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--gray400)}
+.form-select option{background:var(--navy2);color:#fff}
+.form-textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-submit{width:100%;padding:12px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:var(--tr);margin-top:4px}
+.form-submit:hover{opacity:0.9;transform:translateY(-1px)}
+.form-tabs{display:flex;gap:0;margin-bottom:20px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+.form-tab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--gray400);transition:var(--tr)}
+.form-tab.active{background:var(--blue);color:#fff}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:3000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--navy3);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-sm);padding:11px 16px;font-size:13px;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow);min-width:220px;animation:slideIn 0.3s ease;border-left:3px solid var(--lime)}
+.toast.error{border-left-color:#ef4444}
+.toast.info{border-left-color:var(--blue2)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeOut{to{transform:translateX(100%);opacity:0}}
+
+/* FOOTER */
+footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);padding:36px 24px 22px;text-align:center}
+.footer-logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.footer-desc{color:var(--gray400);font-size:13px;max-width:400px;margin:0 auto 18px;line-height:1.6}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:13px;color:var(--gray400);transition:var(--tr);cursor:pointer}
+.footer-links a:hover{color:#fff}
+.footer-copy{font-size:12px;color:var(--gray600)}
+.footer-copy span{color:var(--lime2)}
+
+/* LEAFLET OVERRIDES */
+.leaflet-popup-content-wrapper{background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.3);padding:0}
+.leaflet-popup-content{margin:0}
+.leaflet-popup-tip{background:#fff}
+.leaflet-popup-tip-container{display:none}
+.map-popup-box{padding:14px 16px;font-family:'Inter',sans-serif;min-width:200px}
+.map-popup-name{font-weight:700;font-size:13px;color:#0a0f1e;margin-bottom:3px}
+.map-popup-addr{font-size:11px;color:#555;margin-bottom:3px}
+.map-popup-comm{font-size:11px;color:#777;margin-bottom:10px}
+.map-popup-btn{background:#1d6be8;color:#fff;padding:5px 11px;border-radius:5px;font-size:11px;font-weight:600;border:none;cursor:pointer;margin-right:5px}
+.map-popup-btn2{background:#84cc16;color:#0a0f1e;padding:5px 11px;border-radius:5px;font-size:11px;font-weight:600;border:none;cursor:pointer}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.routes-content{grid-template-columns:1fr}}
+@media(max-width:1024px){.map-layout{flex-direction:column}.map-sidebar{width:100%;min-width:unset;height:280px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08)}.map-container{flex:1;min-height:400px}}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}.cards-grid{grid-template-columns:1fr}.hero-stats{gap:24px}.modal-details{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr;gap:36px}.about-stats{grid-template-columns:repeat(2,1fr)}.route-card-inner{flex-direction:column}.route-card-img{width:100%;height:80px}.form-row{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.about-stats{grid-template-columns:1fr 1fr}.hero-stats{gap:16px}.stat-num{font-size:1.5rem}.card-actions{flex-wrap:wrap}.btn-map{width:100%}}
+.hidden{display:none!important}
+.fade-in{animation:fadeInUp 0.35s ease both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="navigate('home')">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
+      </div>
+      <div class="logo-text">Run<span>Connect</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a id="nav-home"   onclick="navigate('home')"   class="active">Home</a></li>
+      <li><a id="nav-map"    onclick="navigate('map')">Running Map</a></li>
+      <li><a id="nav-routes" onclick="navigate('routes')">Running Routes</a></li>
+      <li><a id="nav-about"  onclick="navigate('about')">About Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a id="mnav-home"   onclick="navigate('home');toggleMobile()"   class="active">Home</a>
+  <a id="mnav-map"    onclick="navigate('map');toggleMobile()">Running Map</a>
+  <a id="mnav-routes" onclick="navigate('routes');toggleMobile()">Running Routes</a>
+  <a id="mnav-about"  onclick="navigate('about');toggleMobile()">About Us</a>
+</div>
+
+<!-- PAGE 1: HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Platform Lari #1 di Surabaya</div>
+      <h1>Temukan <em>Komunitas Lari</em> &amp; Event di Surabaya</h1>
+      <p>Bergabung dengan ratusan pelari aktif, ikuti jadwal latihan rutin, daftar event marathon, dan temukan rute lari terbaik di kotamu.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="scrollToCards()">Jelajahi Kegiatan</button>
+        <button class="btn-secondary" onclick="navigate('routes')">Lihat Rute Lari</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num" id="statKom">12</div><div class="stat-label">Komunitas Aktif</div></div>
+        <div class="stat"><div class="stat-num">450+</div><div class="stat-label">Pelari Terdaftar</div></div>
+        <div class="stat"><div class="stat-num" id="statEvt">12</div><div class="stat-label">Event &amp; Latihan</div></div>
+        <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Rute Lari</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="search-section">
+    <div class="search-box">
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="search-input" id="searchInput" placeholder="Cari komunitas, event, atau kegiatan lari..." oninput="filterCards()"/>
+        </div>
+        <button class="btn-search" onclick="filterCards()">Cari</button>
+        <button class="btn-clear" onclick="clearFilters()">Reset</button>
+      </div>
+      <div class="filter-row">
+        <select class="filter-select" id="filterLokasi" onchange="filterCards()">
+          <option value="">Semua Wilayah</option>
+          <option>Surabaya Barat</option><option>Surabaya Timur</option>
+          <option>Surabaya Pusat</option><option>Surabaya Utara</option><option>Surabaya Selatan</option>
+        </select>
+        <select class="filter-select" id="filterJarak" onchange="filterCards()">
+          <option value="">Semua Jarak</option>
+          <option>3K</option><option>5K</option><option>10K</option><option value="15K+">15K+</option>
+        </select>
+        <select class="filter-select" id="filterLevel" onchange="filterCards()">
+          <option value="">Semua Level</option>
+          <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+        </select>
+        <select class="filter-select" id="filterPace" onchange="filterCards()">
+          <option value="">Semua Pace</option>
+          <option value="slow">Santai (&gt;7:00/km)</option>
+          <option value="moderate">Sedang (5:30-7:00/km)</option>
+          <option value="fast">Cepat (&lt;5:30/km)</option>
+        </select>
+        <select class="filter-select" id="filterType" onchange="filterCards()">
+          <option value="">Semua Jenis</option>
+          <option>Latihan Rutin</option><option>Event</option><option>Fun Run</option>
+        </select>
+        <input type="date" class="filter-select" id="filterDate" onchange="filterCards()" title="Filter by date" style="cursor:pointer"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-label">Trending</span>
+        <h2 class="section-title">Featured Events</h2>
+        <p class="section-sub">Event dan latihan lari populer yang akan segera diselenggarakan</p>
+      </div>
+      <div class="featured-scroll" id="featuredScroll"></div>
+    </div>
+    <div class="section" id="cardsSection">
+      <div class="section-header">
+        <span class="section-label">Jelajahi</span>
+        <h2 class="section-title">Semua Kegiatan Lari</h2>
+        <p class="section-sub" id="cardsSubtitle">Menemukan 12 kegiatan lari di Surabaya</p>
+      </div>
+      <div class="cat-tabs">
+        <button class="cat-tab active" data-cat="all" onclick="setCat(this,'all')">Semua</button>
+        <button class="cat-tab" data-cat="Beginner Friendly" onclick="setCat(this,'Beginner Friendly')">Beginner Friendly</button>
+        <button class="cat-tab" data-cat="Weekly Running" onclick="setCat(this,'Weekly Running')">Weekly Running</button>
+        <button class="cat-tab" data-cat="Running Events" onclick="setCat(this,'Running Events')">Running Events</button>
+        <button class="cat-tab" data-cat="Popular Communities" onclick="setCat(this,'Popular Communities')">Popular Communities</button>
+      </div>
+      <div class="cards-grid" id="cardsGrid"></div>
+      <div class="no-results hidden" id="noResults">
+        <p style="font-size:16px;margin-bottom:6px">Tidak ada kegiatan yang cocok.</p>
+        <p style="font-size:13px;color:var(--gray400)">Coba ubah filter atau kata kunci pencarian.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="add-fab" id="addFab" onclick="openAddForm()">
+  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  Tambah Kegiatan
+</button>
+
+<!-- PAGE 2: RUNNING MAP -->
+<div id="page-map" class="page">
+  <div class="map-layout">
+    <div class="map-sidebar">
+      <div class="map-sbar-hdr">
+        <div class="map-sbar-title-row">
+          <div class="map-sbar-title">Lokasi Komunitas &amp; Kegiatan</div>
+          <div class="map-sbar-count" id="mapLocCount">12</div>
+        </div>
+        <div class="map-search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="map-search-input" placeholder="Cari lokasi atau kegiatan..." id="mapSearchInput" oninput="filterMapLocations()"/>
+        </div>
+      </div>
+      <div class="map-locs-list" id="mapLocationsList"></div>
+    </div>
+    <div class="map-container">
+      <div id="map"></div>
+      <div class="map-info-panel">
+        <span class="map-demo-badge">DEMO</span>
+        Data Lokasi Representasi Wilayah Surabaya
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: RUNNING ROUTES -->
+<div id="page-routes" class="page routes-page">
+  <div class="routes-hero">
+    <div class="routes-hero-content">
+      <div class="hero-badge" style="margin-bottom:16px">Rute Lari Terbaik Surabaya</div>
+      <h2>Temukan Rute Lari <em style="color:var(--lime2)">Favoritmu</em></h2>
+      <p>15+ rute lari terpilih di seluruh wilayah Surabaya</p>
+    </div>
+  </div>
+  <div class="routes-filters">
+    <div class="routes-filter-row">
+      <select class="filter-select" id="routeFilterDist" onchange="filterRoutes()">
+        <option value="">Semua Jarak</option>
+        <option>3K</option><option>5K</option><option>10K</option><option value="15K">15K+</option>
+      </select>
+      <select class="filter-select" id="routeFilterLevel" onchange="filterRoutes()">
+        <option value="">Semua Level</option>
+        <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+      </select>
+      <button class="btn-clear" onclick="clearRouteFilters()">Reset Filter</button>
+    </div>
+  </div>
+  <div class="area-tabs">
+    <button class="area-tab active" data-area="all" onclick="setAreaTab(this,'all')">Semua Wilayah</button>
+    <button class="area-tab" data-area="Surabaya Barat"   onclick="setAreaTab(this,'Surabaya Barat')">Surabaya Barat</button>
+    <button class="area-tab" data-area="Surabaya Tengah"  onclick="setAreaTab(this,'Surabaya Tengah')">Surabaya Tengah</button>
+    <button class="area-tab" data-area="Surabaya Timur"   onclick="setAreaTab(this,'Surabaya Timur')">Surabaya Timur</button>
+    <button class="area-tab" data-area="Surabaya Utara"   onclick="setAreaTab(this,'Surabaya Utara')">Surabaya Utara</button>
+    <button class="area-tab" data-area="Surabaya Selatan" onclick="setAreaTab(this,'Surabaya Selatan')">Surabaya Selatan</button>
+  </div>
+  <div class="routes-content">
+    <div id="routesList"></div>
+    <div class="routes-map-panel">
+      <div class="routes-map-header">Peta Rute <span>Data Ilustrasi Demo</span></div>
+      <div id="routesMap"></div>
+      <div class="routes-map-info" id="routesMapInfo">
+        <p style="color:var(--gray400);font-size:12px">Pilih rute di kiri untuk melihat detail dan jalur pada peta</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: ABOUT US -->
+<div id="page-about" class="page about-page">
+  <div class="about-hero">
+    <div class="about-hero-content">
+      <div class="about-logo-big">
+        <svg viewBox="0 0 24 24"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
+      </div>
+      <h2>Tentang RunConnect</h2>
+      <p>Platform digital yang menghubungkan para pelari dengan komunitas, jadwal latihan, event, dan rute lari di Surabaya dalam satu tempat.</p>
+    </div>
+  </div>
+  <div class="about-stats">
+    <div class="about-stat-card"><div class="about-stat-num" id="statKom2">12</div><div class="about-stat-label">Komunitas Lari</div></div>
+    <div class="about-stat-card"><div class="about-stat-num">450+</div><div class="about-stat-label">Pelari Aktif</div></div>
+    <div class="about-stat-card"><div class="about-stat-num" id="statEvt2">12</div><div class="about-stat-label">Event &amp; Latihan</div></div>
+    <div class="about-stat-card"><div class="about-stat-num">25+</div><div class="about-stat-label">Rute Lari</div></div>
+  </div>
+  <div class="about-section">
+    <div class="about-grid">
+      <div class="about-block">
+        <h3>About RunConnect</h3>
+        <p>RunConnect adalah platform digital yang dirancang untuk menghubungkan para pelari dengan komunitas, jadwal latihan rutin, event lari, dan lokasi lari di Surabaya dalam satu tempat.</p>
+        <p style="margin-top:10px">Platform ini hadir untuk membantu pelari, khususnya pemula, agar lebih mudah menemukan aktivitas lari yang sesuai dengan kemampuan, pace, jarak, dan lokasi yang diinginkan.</p>
+        <div class="vision-box">
+          <span class="section-label">Our Vision</span>
+          <p>Menjadi platform informasi dan penghubung komunitas lari yang memudahkan masyarakat Surabaya untuk menjalani gaya hidup sehat dan aktif melalui olahraga lari.</p>
+        </div>
+      </div>
+      <div class="about-block">
+        <h3>Our Mission</h3>
+        <ul class="mission-list">
+          <li><span class="mission-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Memusatkan informasi komunitas dan aktivitas lari dalam satu platform.</li>
+          <li><span class="mission-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Mempermudah pelari menemukan jadwal latihan dan event.</li>
+          <li><span class="mission-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Membantu pelari pemula menemukan komunitas yang sesuai.</li>
+          <li><span class="mission-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Menyediakan informasi lokasi dan rekomendasi rute lari.</li>
+          <li><span class="mission-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Membangun konektivitas antar pelari dan komunitas di Surabaya.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="purpose-box">
+      <span class="section-label">Our Purpose</span>
+      <h3>Berlari Bersama, Lebih Jauh Bersama</h3>
+      <p>Menciptakan pengalaman berlari yang lebih mudah, terorganisir, dan menyenangkan dengan menghubungkan setiap pelari melalui informasi yang terintegrasi.</p>
+    </div>
+  </div>
+
+  <div class="team-section">
+    <div class="contact-title">Tim Pengembang</div>
+    <p class="team-sub">RunConnect dikembangkan oleh tim yang bersemangat membangun ekosistem lari Surabaya</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#1d6be8,#3b82f6)">RC</div>
+        <div class="team-name">RunConnect Team</div>
+        <div class="team-role">Product &amp; Development</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#84cc16,#a3e635)">UI</div>
+        <div class="team-name">Design Team</div>
+        <div class="team-role">UI/UX &amp; Branding</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">CM</div>
+        <div class="team-name">Community Manager</div>
+        <div class="team-role">Komunitas &amp; Konten</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">OP</div>
+        <div class="team-name">Operations</div>
+        <div class="team-role">Event &amp; Partnership</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-title">Hubungi Kami</div>
+    <div class="contact-grid">
+      <div class="contact-card" onclick="showToast('Email: hello@runconnect.id','info')">
+        <div class="contact-icon" style="background:rgba(29,107,232,0.15)"><svg viewBox="0 0 24 24" stroke="#3b82f6"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><div class="contact-label">Email</div><div class="contact-val">hello@runconnect.id</div></div>
+      </div>
+      <div class="contact-card" onclick="showToast('Instagram: @runconnect.sby','info')">
+        <div class="contact-icon" style="background:rgba(236,72,153,0.15)"><svg viewBox="0 0 24 24" stroke="#f472b6"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+        <div><div class="contact-label">Instagram</div><div class="contact-val">@runconnect.sby</div></div>
+      </div>
+      <div class="contact-card" onclick="showToast('WhatsApp: +62 812-3456-7890','info')">
+        <div class="contact-icon" style="background:rgba(34,197,94,0.15)"><svg viewBox="0 0 24 24" stroke="#4ade80"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+        <div><div class="contact-label">WhatsApp</div><div class="contact-val">+62 812-3456-7890</div></div>
+      </div>
+      <div class="contact-card" onclick="showToast('TikTok: @runconnectid','info')">
+        <div class="contact-icon" style="background:rgba(20,184,166,0.15)"><svg viewBox="0 0 24 24" stroke="#2dd4bf"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg></div>
+        <div><div class="contact-label">TikTok</div><div class="contact-val">@runconnectid</div></div>
+      </div>
+      <div class="contact-card" onclick="showToast('Lokasi: Surabaya, Jawa Timur','info')">
+        <div class="contact-icon" style="background:rgba(234,179,8,0.15)"><svg viewBox="0 0 24 24" stroke="#facc15"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="contact-label">Lokasi</div><div class="contact-val">Surabaya, Jawa Timur</div></div>
+      </div>
+      <div class="contact-card" onclick="showToast('Website: runconnect.id','info')">
+        <div class="contact-icon" style="background:rgba(99,102,241,0.15)"><svg viewBox="0 0 24 24" stroke="#818cf8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+        <div><div class="contact-label">Website</div><div class="contact-val">runconnect.id</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-img" id="modalImg">
+      <div id="modalIconBox" style="width:70px;height:70px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#fff">RC</div>
+      <button class="modal-close" onclick="closeModal(null)">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-community" id="modalCommunity"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-details" id="modalDetails"></div>
+      <div class="modal-actions">
+        <button class="btn-modal-map" onclick="openMapFromModal()">Lihat di Peta</button>
+        <button class="btn-modal-join" id="modalJoinBtn" onclick="rsvpFromModal()">Daftar / RSVP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD FORM MODAL -->
+<div class="modal-overlay" id="addOverlay" onclick="closeAddForm(event)">
+  <div class="form-modal" onclick="event.stopPropagation()">
+    <div class="form-header">
+      <h3>Tambah Kegiatan Lari</h3>
+      <button class="modal-close" style="position:static" onclick="closeAddForm(null)">&times;</button>
+    </div>
+    <div class="form-body">
+      <div class="form-tabs">
+        <button class="form-tab active" id="ftab-event" onclick="switchFormTab('event')">Event / Latihan</button>
+        <button class="form-tab" id="ftab-community" onclick="switchFormTab('community')">Komunitas</button>
+      </div>
+      <div id="formEvent">
+        <div class="form-group">
+          <label class="form-label">Nama Kegiatan *</label>
+          <input class="form-input" id="f_title" placeholder="Contoh: Sunday Morning Run Darmo"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nama Komunitas</label>
+            <input class="form-input" id="f_community" placeholder="Nama komunitas penyelenggara"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jenis *</label>
+            <select class="form-select" id="f_type">
+              <option>Latihan Rutin</option><option>Event</option><option>Fun Run</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Lokasi / Alamat *</label>
+          <input class="form-input" id="f_location" placeholder="Contoh: Taman Bungkul, Surabaya Selatan"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Wilayah *</label>
+            <select class="form-select" id="f_wilayah">
+              <option>Surabaya Pusat</option><option>Surabaya Barat</option>
+              <option>Surabaya Timur</option><option>Surabaya Utara</option><option>Surabaya Selatan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kategori</label>
+            <select class="form-select" id="f_cat">
+              <option>Beginner Friendly</option><option>Weekly Running</option>
+              <option>Running Events</option><option>Popular Communities</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tanggal *</label>
+            <input class="form-input" id="f_date" type="date"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jam</label>
+            <input class="form-input" id="f_time" type="time" value="06:00"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Jarak</label>
+            <select class="form-select" id="f_jarak">
+              <option>3K</option><option>5K</option><option>10K</option><option>15K+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Level</label>
+            <select class="form-select" id="f_level">
+              <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Pace (cth: 6:00-7:00 /km)</label>
+            <input class="form-input" id="f_pace" placeholder="6:00-7:00 /km"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tags (pisah koma)</label>
+            <input class="form-input" id="f_tags" placeholder="Pemula, Santai, Pagi"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi</label>
+          <textarea class="form-textarea" id="f_desc" placeholder="Deskripsi singkat kegiatan..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitActivity()">Tambahkan Kegiatan</button>
+      </div>
+      <div id="formCommunity" class="hidden">
+        <div class="form-group">
+          <label class="form-label">Nama Komunitas *</label>
+          <input class="form-input" id="fc_name" placeholder="Contoh: Surabaya Morning Runners"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Wilayah *</label>
+            <select class="form-select" id="fc_wilayah">
+              <option>Surabaya Pusat</option><option>Surabaya Barat</option>
+              <option>Surabaya Timur</option><option>Surabaya Utara</option><option>Surabaya Selatan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jadwal Rutin</label>
+            <input class="form-input" id="fc_schedule" placeholder="Cth: Setiap Minggu 06:00"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Lokasi Kumpul</label>
+            <input class="form-input" id="fc_location" placeholder="Titik kumpul komunitas"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Level Utama</label>
+            <select class="form-select" id="fc_level">
+              <option>Beginner</option><option>Intermediate</option><option>Advanced</option><option>Semua Level</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kontak / WhatsApp</label>
+          <input class="form-input" id="fc_contact" placeholder="+62 8xx-xxxx-xxxx atau link WA Group"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi Komunitas</label>
+          <textarea class="form-textarea" id="fc_desc" placeholder="Ceritakan tentang komunitas kamu..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitCommunity()">Daftarkan Komunitas</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<footer id="mainFooter">
+  <div class="footer-logo">
+    <div class="logo-icon" style="width:32px;height:32px">
+      <svg viewBox="0 0 24 24"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
+    </div>
+    <span style="font-family:'Space Grotesk';font-weight:700;font-size:16px">Run<span style="color:var(--lime2)">Connect</span></span>
+  </div>
+  <p class="footer-desc">Platform digital komunitas lari Surabaya - Menghubungkan pelari, komunitas, dan event dalam satu tempat.</p>
+  <div class="footer-links">
+    <a onclick="navigate('home')">Home</a>
+    <a onclick="navigate('map')">Running Map</a>
+    <a onclick="navigate('routes')">Running Routes</a>
+    <a onclick="navigate('about')">About Us</a>
+  </div>
+  <p class="footer-copy">&#169; 2025 <span>RunConnect</span> &#183; Surabaya, Jawa Timur &#183; Prototype MVP</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var ACTIVITIES = [
+  {id:1,color:'#3b82f6',icon:'RC',title:'Morning Sunrise Run SBY',community:'Komunitas Pelari Surabaya (KPS)',
+   desc:'Lari pagi bersama di sepanjang Jalan Darmo dengan suasana kota yang masih segar. Cocok untuk pemula yang ingin membangun rutinitas lari.',
+   location:'Jl. Raya Darmo, Surabaya Pusat',lat:-7.2908,lng:112.7340,
+   date:'2025-12-07',time:'05:30',jarak:'5K',level:'Beginner',
+   pace:'7:00-8:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Pusat',
+   category:'Beginner Friendly',featured:true,tags:['Pemula','Pagi','Jl. Darmo'],custom:false},
+  {id:2,color:'#f59e0b',icon:'HM',title:'Surabaya Half Marathon 2025',community:'Surabaya Running Festival',
+   desc:'Event lari akbar tahunan Surabaya dengan kategori 5K, 10K, dan Half Marathon. Hadiah total Rp 150 juta.',
+   location:'Monumen Tugu Pahlawan, Surabaya Utara',lat:-7.2459,lng:112.7378,
+   date:'2025-12-21',time:'05:00',jarak:'10K',level:'Intermediate',
+   pace:'5:30-6:30 /km',type:'Event',wilayah:'Surabaya Utara',
+   category:'Running Events',featured:true,tags:['Event','Kompetisi','Half Marathon'],custom:false},
+  {id:3,color:'#84cc16',icon:'GR',title:'Eco Run Kebun Binatang',community:'Green Runners Surabaya',
+   desc:'Lari santai mengelilingi area sekitar Kebun Binatang Surabaya di pagi hari. Program ramah lingkungan.',
+   location:'Kebun Binatang Surabaya, Surabaya Selatan',lat:-7.3027,lng:112.7362,
+   date:'2025-12-13',time:'06:00',jarak:'5K',level:'Beginner',
+   pace:'7:30-9:00 /km',type:'Fun Run',wilayah:'Surabaya Selatan',
+   category:'Beginner Friendly',featured:false,tags:['Pemula','Eco','Fun Run'],custom:false},
+  {id:4,color:'#ef4444',icon:'SS',title:'East Side Speed Training',community:'Surabaya Speed Club',
+   desc:'Sesi latihan kecepatan intensif di area Kenjeran. Fokus pada interval training dan peningkatan pace.',
+   location:'Pantai Kenjeran, Surabaya Timur',lat:-7.2277,lng:112.8064,
+   date:'2025-12-10',time:'05:30',jarak:'10K',level:'Advanced',
+   pace:'4:30-5:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Timur',
+   category:'Weekly Running',featured:false,tags:['Speed','Interval','Advanced'],custom:false},
+  {id:5,color:'#8b5cf6',icon:'CR',title:'West Side Weekly Run',community:'Citraland Runners',
+   desc:'Lari rutin mingguan di kawasan Citraland. Rute melewati jalan-jalan perumahan yang nyaman.',
+   location:'CitraLand, Surabaya Barat',lat:-7.2885,lng:112.6639,
+   date:'2025-12-14',time:'05:00',jarak:'5K',level:'Beginner',
+   pace:'6:30-8:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Barat',
+   category:'Weekly Running',featured:true,tags:['Rutin','Keluarga','Citraland'],custom:false},
+  {id:6,color:'#f97316',icon:'HR',title:'Heritage City Run',community:'Surabaya Heritage Runners',
+   desc:'Berlari sambil menjelajahi bangunan-bangunan bersejarah di pusat kota Surabaya.',
+   location:'Jembatan Merah, Surabaya Utara',lat:-7.2401,lng:112.7378,
+   date:'2025-12-20',time:'06:30',jarak:'5K',level:'Beginner',
+   pace:'7:00-8:30 /km',type:'Fun Run',wilayah:'Surabaya Utara',
+   category:'Popular Communities',featured:false,tags:['Heritage','Wisata','City Run'],custom:false},
+  {id:7,color:'#06b6d4',icon:'NR',title:'Night Run Surabaya 10K',community:'Night Runners SBY',
+   desc:'Berlari di malam hari menyusuri jalan protokol Surabaya dengan penerangan kota yang indah.',
+   location:'GOR Jl. Indragiri, Surabaya Pusat',lat:-7.2730,lng:112.7417,
+   date:'2025-12-27',time:'19:00',jarak:'10K',level:'Intermediate',
+   pace:'5:30-6:30 /km',type:'Event',wilayah:'Surabaya Pusat',
+   category:'Running Events',featured:true,tags:['Night Run','Event','Malam'],custom:false},
+  {id:8,color:'#84cc16',icon:'RS',title:'Beginner 3K Training Program',community:'RunStart Surabaya',
+   desc:'Program latihan terstruktur 8 minggu khusus untuk pelari pemula. Dibimbing oleh pelatih berpengalaman.',
+   location:'Lapangan UNAIR, Surabaya Timur',lat:-7.2777,lng:112.7960,
+   date:'2025-12-08',time:'06:00',jarak:'3K',level:'Beginner',
+   pace:'8:00-10:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Timur',
+   category:'Beginner Friendly',featured:false,tags:['Pemula','Program','Coach','3K'],custom:false},
+  {id:9,color:'#ef4444',icon:'SA',title:'Speed Interval Track SBY',community:'Surabaya Athletics Club',
+   desc:'Latihan interval di lintasan atletik resmi. Program khusus meningkatkan kecepatan dan stamina.',
+   location:'Stadion Gelora Bung Tomo, Surabaya Barat',lat:-7.3100,lng:112.6500,
+   date:'2025-12-09',time:'05:00',jarak:'10K',level:'Advanced',
+   pace:'4:00-4:30 /km',type:'Latihan Rutin',wilayah:'Surabaya Barat',
+   category:'Weekly Running',featured:false,tags:['Track','Interval','Sprint','GBT'],custom:false},
+  {id:10,color:'#ec4899',icon:'RR',title:'Rungkut Sunday Fun Run',community:'Rungkut Runners',
+   desc:'Fun run keluarga setiap Minggu pagi di kawasan Rungkut. Suasana seru dan santai bersama komunitas lokal.',
+   location:'Perumahan Rungkut, Surabaya Timur',lat:-7.3310,lng:112.7893,
+   date:'2025-12-21',time:'06:00',jarak:'5K',level:'Beginner',
+   pace:'7:00-9:00 /km',type:'Fun Run',wilayah:'Surabaya Timur',
+   category:'Popular Communities',featured:false,tags:['Keluarga','Fun Run','Minggu'],custom:false},
+  {id:11,color:'#f59e0b',icon:'ER',title:'Surabaya 15K Challenge',community:'Elite Runners Surabaya',
+   desc:'Tantangan lari jarak menengah 15K untuk pelari berpengalaman. Rute bervariasi melewati beberapa wilayah.',
+   location:'Taman Bungkul, Surabaya Selatan',lat:-7.2994,lng:112.7378,
+   date:'2025-12-28',time:'05:00',jarak:'15K+',level:'Advanced',
+   pace:'5:00-5:30 /km',type:'Event',wilayah:'Surabaya Selatan',
+   category:'Running Events',featured:true,tags:['Advanced','15K','Challenge'],custom:false},
+  {id:12,color:'#84cc16',icon:'C5',title:'Couch to 5K Surabaya',community:'RunStart Surabaya',
+   desc:'Program Couch to 5K yang telah membantu ribuan pemula berlari. 9 minggu terstruktur dari nol hingga 5K.',
+   location:'Taman Flora, Surabaya Timur',lat:-7.3010,lng:112.7996,
+   date:'2025-12-06',time:'06:30',jarak:'3K',level:'Beginner',
+   pace:'8:00-12:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Timur',
+   category:'Beginner Friendly',featured:false,tags:['C25K','Pemula','Program'],custom:false}
+];
+
+var ROUTES = [
+  {id:1,icon:'KN',name:'Kenjeran Coastal Loop',area:'Surabaya Timur',dist:'10K',level:'Intermediate',
+   start:'Pantai Kenjeran',end:'Jembatan Suroboyo',duration:'55-70 menit',
+   desc:'Rute tepi pantai dengan pemandangan Selat Madura. Trek relatif datar dengan angin laut yang segar.',
+   lat:-7.2277,lng:112.8064,color:'#3b82f6',
+   suitable:'Cocok untuk pelari intermediate yang ingin menikmati pemandangan laut.'},
+  {id:2,icon:'OT',name:'Old Town Heritage Trail',area:'Surabaya Utara',dist:'5K',level:'Beginner',
+   start:'Jembatan Merah',end:'Tugu Pahlawan',duration:'28-40 menit',
+   desc:'Rute wisata sejarah melewati kawasan kota lama Surabaya. Jalan datar dan lebar.',
+   lat:-7.2401,lng:112.7378,color:'#a855f7',
+   suitable:'Ramah untuk pelari pemula yang ingin menjelajahi sejarah kota.'},
+  {id:3,icon:'DG',name:'Darmo Green Corridor',area:'Surabaya Tengah',dist:'5K',level:'Beginner',
+   start:'Taman Mayangkara',end:'Taman Bungkul',duration:'28-38 menit',
+   desc:'Koridor hijau Jalan Darmo dengan pohon-pohon rindang. Jalur nyaman dan populer.',
+   lat:-7.2908,lng:112.7340,color:'#84cc16',
+   suitable:'Sangat populer untuk pemula dan pelari rutin.'},
+  {id:4,icon:'CL',name:'Citraland Residential Loop',area:'Surabaya Barat',dist:'5K',level:'Beginner',
+   start:'CitraLand Commercial',end:'CitraLand Park',duration:'30-42 menit',
+   desc:'Rute di dalam kawasan perumahan Citraland. Jalan bersih dan minim kendaraan berat.',
+   lat:-7.2885,lng:112.6639,color:'#f97316',
+   suitable:'Cocok untuk pelari pemula dan lari keluarga.'},
+  {id:5,icon:'BP',name:'Bungkul Park Circuit',area:'Surabaya Selatan',dist:'3K',level:'Beginner',
+   start:'Taman Bungkul',end:'Taman Bungkul',duration:'15-22 menit',
+   desc:'Sirkuit populer mengelilingi Taman Bungkul. Trek pendek untuk pemanasan atau pendinginan.',
+   lat:-7.2994,lng:112.7378,color:'#ec4899',
+   suitable:'Ideal untuk pemula pertama kali atau lari sore santai.'},
+  {id:6,icon:'KR',name:'Kalimas Riverside Run',area:'Surabaya Utara',dist:'10K',level:'Intermediate',
+   start:'Monumen Kapal Selam',end:'Jembatan Merah',duration:'55-75 menit',
+   desc:'Rute di sepanjang tepi Sungai Kalimas dengan pemandangan sungai bersejarah.',
+   lat:-7.2459,lng:112.7378,color:'#06b6d4',
+   suitable:'Cocok untuk pelari intermediate yang menyukai jalur bersejarah.'},
+  {id:7,icon:'MR',name:'Mulyorejo Morning Route',area:'Surabaya Timur',dist:'5K',level:'Beginner',
+   start:'Kampus ITS',end:'Mulyorejo Raya',duration:'28-38 menit',
+   desc:'Rute pagi di kawasan Mulyorejo dengan jalanan yang relatif sepi.',
+   lat:-7.2777,lng:112.7960,color:'#f59e0b',
+   suitable:'Baik untuk pemula yang menginginkan rute tenang.'},
+  {id:8,icon:'GS',name:'GBT Stadium Sprint Loop',area:'Surabaya Barat',dist:'10K',level:'Advanced',
+   start:'Gelora Bung Tomo',end:'Gelora Bung Tomo',duration:'45-55 menit',
+   desc:'Rute melingkar di sekitar Stadion GBT untuk latihan kecepatan dan interval.',
+   lat:-7.3100,lng:112.6500,color:'#ef4444',
+   suitable:'Direkomendasikan untuk pelari advanced yang ingin latihan intensitas tinggi.'},
+  {id:9,icon:'WL',name:'Wonokromo Long Distance',area:'Surabaya Selatan',dist:'15K',level:'Advanced',
+   start:'Kebun Binatang SBY',end:'Wonokromo Terminal',duration:'80-105 menit',
+   desc:'Rute jarak jauh untuk pelari berpengalaman melewati beberapa kawasan padat.',
+   lat:-7.3027,lng:112.7362,color:'#6366f1',
+   suitable:'Khusus pelari advanced. Disarankan bawa minum sendiri.'},
+  {id:10,icon:'GN',name:'Gubeng Night Circuit',area:'Surabaya Tengah',dist:'10K',level:'Intermediate',
+   start:'Stasiun Gubeng',end:'Jl. Pemuda',duration:'55-70 menit',
+   desc:'Rute malam hari di pusat kota dengan pencahayaan jalan yang baik.',
+   lat:-7.2730,lng:112.7417,color:'#8b5cf6',
+   suitable:'Cocok untuk lari malam pelari intermediate. Pakai pakaian terang.'},
+  {id:11,icon:'SR',name:'Sukolilo Reservoir Loop',area:'Surabaya Timur',dist:'5K',level:'Beginner',
+   start:'Kampus ITS Sukolilo',end:'Jl. Kertajaya',duration:'28-36 menit',
+   desc:'Rute melingkar di kawasan Sukolilo dengan jalan lingkar kampus yang nyaman dan sepi.',
+   lat:-7.2860,lng:112.7960,color:'#14b8a6',
+   suitable:'Baik untuk mahasiswa dan pelari pemula di area Sukolilo-Keputih.'},
+  {id:12,icon:'TJ',name:'Tunjungan City Walk',area:'Surabaya Tengah',dist:'3K',level:'Beginner',
+   start:'Tunjungan Plaza',end:'Balai Kota Surabaya',duration:'15-20 menit',
+   desc:'Rute pendek di jantung kota melewati kawasan Tunjungan bersejarah.',
+   lat:-7.2574,lng:112.7399,color:'#f43f5e',
+   suitable:'Cocok untuk lari santai sore dan pelari pemula kota.'},
+  {id:13,icon:'BK',name:'Bratang - Kendangsari Loop',area:'Surabaya Timur',dist:'10K',level:'Intermediate',
+   start:'Jl. Bratang',end:'Jl. Kendangsari',duration:'52-65 menit',
+   desc:'Rute melewati kawasan perumahan Bratang dan Kendangsari. Trek bervariasi ringan.',
+   lat:-7.3100,lng:112.7820,color:'#0ea5e9',
+   suitable:'Cocok untuk pelari intermediate yang ingin rute perumahan dengan variasi.'},
+  {id:14,icon:'PW',name:'Pakal West Endurance',area:'Surabaya Barat',dist:'15K',level:'Advanced',
+   start:'Terminal Pakal',end:'Jl. Raya Menganti',duration:'80-100 menit',
+   desc:'Rute jarak jauh di wilayah barat Surabaya dengan medan yang lebih bervariasi.',
+   lat:-7.2985,lng:112.6420,color:'#dc2626',
+   suitable:'Khusus pelari advanced. Rute di wilayah berkembang Surabaya Barat.'},
+  {id:15,icon:'TM',name:'Tambak Madu Riverside',area:'Surabaya Utara',dist:'5K',level:'Beginner',
+   start:'Jl. Tambak Madu',end:'Pelabuhan Tanjung Perak (arah)',duration:'28-38 menit',
+   desc:'Rute di area Surabaya Utara melewati jalan-jalan lingkungan yang relatif sepi di pagi hari.',
+   lat:-7.2192,lng:112.7290,color:'#7c3aed',
+   suitable:'Cocok untuk pelari pemula di wilayah Surabaya Utara.'},
+  {id:16,icon:'JM',name:'Jambangan - Menanggal Route',area:'Surabaya Selatan',dist:'10K',level:'Intermediate',
+   start:'Taman Jambangan',end:'Jl. Menanggal',duration:'52-68 menit',
+   desc:'Rute di wilayah selatan Surabaya melewati kawasan hijau Jambangan.',
+   lat:-7.3450,lng:112.7250,color:'#059669',
+   suitable:'Baik untuk pelari intermediate yang suka suasana tenang di luar pusat kota.'}
+];
+
+var currentCat = 'all', currentArea = 'all', currentFormTab = 'event';
+var rsvpSet = {}, nextId = 100;
+var mapInstance = null, routesMapInstance = null;
+var leafMarkers = {}, routePolylines = [], selectedRouteId = null, currentModalId = null;
+
+/* NAV */
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  ['home','map','routes','about'].forEach(function(p){
+    var ne=document.getElementById('nav-'+p), me=document.getElementById('mnav-'+p);
+    if(ne) ne.classList.remove('active');
+    if(me) me.classList.remove('active');
+  });
+  document.getElementById('page-'+page).classList.add('active');
+  var ne=document.getElementById('nav-'+page), me=document.getElementById('mnav-'+page);
+  if(ne) ne.classList.add('active');
+  if(me) me.classList.add('active');
+  document.getElementById('mainFooter').style.display = (page==='map') ? 'none' : '';
+  document.getElementById('addFab').style.display = (page==='home') ? '' : 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(page==='map')    setTimeout(initMap,     150);
+  if(page==='routes') setTimeout(initRoutesMap,150);
+}
+function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open');}
+function scrollToCards(){document.getElementById('cardsSection').scrollIntoView({behavior:'smooth'});}
+
+/* HELPERS */
+function parsePaceMin(s){var m=String(s).match(/(\d+):(\d+)/);return m?parseInt(m[1])+parseInt(m[2])/60:7;}
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
+function fmtDate(s){try{return new Date(s).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});}catch(e){return s;}}
+
+/* FILTER */
+function getFiltered(){
+  var data=ACTIVITIES.slice();
+  var q=(document.getElementById('searchInput').value||'').toLowerCase();
+  var lok=document.getElementById('filterLokasi').value||'';
+  var jar=document.getElementById('filterJarak').value||'';
+  var lev=document.getElementById('filterLevel').value||'';
+  var pac=document.getElementById('filterPace').value||'';
+  var typ=document.getElementById('filterType').value||'';
+  var dt=document.getElementById('filterDate').value||'';
+  if(q)   data=data.filter(function(a){return a.title.toLowerCase().indexOf(q)>=0||a.community.toLowerCase().indexOf(q)>=0||a.location.toLowerCase().indexOf(q)>=0||a.tags.join(' ').toLowerCase().indexOf(q)>=0;});
+  if(lok) data=data.filter(function(a){return a.wilayah===lok;});
+  if(jar) data=data.filter(function(a){return a.jarak===jar;});
+  if(lev) data=data.filter(function(a){return a.level===lev;});
+  if(typ) data=data.filter(function(a){return a.type===typ;});
+  if(dt)  data=data.filter(function(a){return a.date===dt;});
+  if(pac==='slow')     data=data.filter(function(a){return parsePaceMin(a.pace)>=7;});
+  if(pac==='moderate') data=data.filter(function(a){var p=parsePaceMin(a.pace);return p>=5.5&&p<7;});
+  if(pac==='fast')     data=data.filter(function(a){return parsePaceMin(a.pace)<5.5;});
+  if(currentCat!=='all') data=data.filter(function(a){return a.category===currentCat;});
+  return data;
+}
+
+/* RENDER CARDS */
+function renderCards(){
+  var data=getFiltered();
+  var grid=document.getElementById('cardsGrid');
+  var noRes=document.getElementById('noResults');
+  document.getElementById('cardsSubtitle').textContent='Menemukan '+data.length+' kegiatan lari di Surabaya';
+  updateStats();
+  if(!data.length){grid.innerHTML='';noRes.classList.remove('hidden');return;}
+  noRes.classList.add('hidden');
+  grid.innerHTML=data.map(function(a){
+    var lvl='badge-'+a.level.toLowerCase();
+    var rsvp=rsvpSet[a.id];
+    return '<div class="run-card fade-in" onclick="openModal('+a.id+')">'
+      +'<div class="card-img">'
+      +'<div class="card-img-bg" style="background:linear-gradient(135deg,'+a.color+'22,'+a.color+'08)"></div>'
+      +'<div style="width:60px;height:60px;border-radius:14px;background:'+a.color+';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff;letter-spacing:1px;position:relative;z-index:1;box-shadow:0 4px 16px '+a.color+'66">'+a.icon+'</div>'
+      +'<div class="card-color-bar" style="background:linear-gradient(90deg,'+a.color+','+a.color+'88)"></div>'
+      +'<span class="card-badge '+lvl+'">'+a.level+'</span>'
+      +(a.featured?'<span class="card-feat-tag">Featured</span>':'')
+      +(a.custom?'<span class="card-custom-tag">Baru</span>':'')
+      +'</div>'
+      +'<div class="card-body">'
+      +'<div class="card-title">'+esc(a.title)+'</div>'
+      +'<div class="card-community">'+esc(a.community)+'</div>'
+      +'<div class="card-desc">'+esc(a.desc)+'</div>'
+      +'<div class="card-meta">'
+      +'<div class="card-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>'+esc(a.wilayah)+'</span></div>'
+      +'<div class="card-meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>'+fmtDate(a.date)+'</span></div>'
+      +'<div class="card-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>'+esc(a.time)+' WIB</span></div>'
+      +'<div class="card-meta-item"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><strong>'+esc(a.jarak)+'</strong>&nbsp;<span style="font-size:10px;color:var(--gray600)">'+esc(a.pace)+'</span></div>'
+      +'</div>'
+      +'<div class="card-tags">'+a.tags.map(function(t){return '<span class="card-tag">'+esc(t)+'</span>';}).join('')+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="btn-view" onclick="event.stopPropagation();openModal('+a.id+')">View Details</button>'
+      +'<button class="btn-map" onclick="event.stopPropagation();goToMap('+a.id+')" title="Lihat di Peta"><svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--blue3);fill:none;stroke-width:2;display:inline-block;vertical-align:middle"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></button>'
+      +'<button class="btn-join'+(rsvp?' rsvp-done':'')+'" onclick="event.stopPropagation();doRSVP('+a.id+')">'+(rsvp?'&#10003; Terdaftar':'Join / RSVP')+'</button>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+function renderFeatured(){
+  var feat=ACTIVITIES.filter(function(a){return a.featured;});
+  document.getElementById('featuredScroll').innerHTML=feat.map(function(a){
+    return '<div class="feat-card" onclick="openModal('+a.id+')">'
+      +'<div style="width:40px;height:40px;border-radius:10px;background:'+a.color+';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;margin-bottom:8px;box-shadow:0 2px 10px '+a.color+'55">'+a.icon+'</div>'
+      +'<div class="feat-title">'+esc(a.title)+'</div>'
+      +'<div class="feat-date">'+fmtDate(a.date)+' &middot; '+a.time+' WIB</div>'
+      +'<div class="feat-desc">'+esc(a.desc.substring(0,80))+'...</div>'
+      +'<div class="feat-chips"><span class="feat-chip">'+a.jarak+'</span><span class="feat-chip">'+a.level+'</span><span class="feat-chip">'+a.type+'</span></div>'
+      +'</div>';
+  }).join('');
+}
+
+function setCat(el,cat){
+  document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');currentCat=cat;renderCards();
+}
+function filterCards(){renderCards();}
+function clearFilters(){
+  ['searchInput','filterLokasi','filterJarak','filterLevel','filterPace','filterType','filterDate'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.value='';
+  });
+  currentCat='all';
+  document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelector('.cat-tab[data-cat="all"]').classList.add('active');
+  renderCards();
+}
+function goToMap(id){
+  navigate('map');
+  setTimeout(function(){hlMapLoc(id);},500);
+}
+function doRSVP(id){
+  if(rsvpSet[id]){delete rsvpSet[id];showToast('RSVP dibatalkan','info');}
+  else{rsvpSet[id]=true;showToast('Berhasil mendaftar! Konfirmasi akan dikirim via email.');}
+  renderCards();
+}
+function updateStats(){
+  var n=ACTIVITIES.length;
+  ['statKom','statEvt','statKom2','statEvt2'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.textContent=n;
+  });
+}
+
+/* MODAL */
+function openModal(id){
+  var a=ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if(!a)return;
+  currentModalId=id;
+  var box=document.getElementById('modalIconBox');
+  box.textContent=a.icon; box.style.background=a.color;
+  document.getElementById('modalImg').style.borderTop='4px solid '+a.color;
+  document.getElementById('modalTitle').textContent=a.title;
+  document.getElementById('modalCommunity').textContent='Komunitas: '+a.community;
+  document.getElementById('modalDesc').textContent=a.desc;
+  document.getElementById('modalDetails').innerHTML=
+    di('Wilayah',a.wilayah)+di('Tanggal',fmtDate(a.date))+
+    di('Waktu',a.time+' WIB')+di('Jarak',a.jarak)+
+    di('Level',a.level)+di('Pace',a.pace)+
+    di('Jenis',a.type)+di('Lokasi',a.location);
+  var btn=document.getElementById('modalJoinBtn'),done=rsvpSet[id];
+  btn.textContent=done?'Batalkan RSVP':'Daftar / RSVP';
+  btn.style.background=done?'linear-gradient(135deg,#84cc16,#a3e635)':'';
+  btn.style.color=done?'#0a0f1e':'';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function di(label,val){
+  return '<div class="modal-detail-item"><div class="modal-detail-label">'+label+'</div><div class="modal-detail-val">'+esc(val)+'</div></div>';
+}
+function closeModal(e){
+  if(e&&e.target!==document.getElementById('modalOverlay'))return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function openMapFromModal(){closeModal(null);navigate('map');if(currentModalId!==null)setTimeout(function(){hlMapLoc(currentModalId);},500);}
+function rsvpFromModal(){
+  if(currentModalId===null)return;
+  doRSVP(currentModalId);
+  var btn=document.getElementById('modalJoinBtn'),done=rsvpSet[currentModalId];
+  btn.textContent=done?'Batalkan RSVP':'Daftar / RSVP';
+  btn.style.background=done?'linear-gradient(135deg,#84cc16,#a3e635)':'';
+  btn.style.color=done?'#0a0f1e':'';
+}
+
+/* ADD FORM */
+function openAddForm(){document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeAddForm(e){if(e&&e.target!==document.getElementById('addOverlay'))return;document.getElementById('addOverlay').classList.remove('open');document.body.style.overflow='';}
+function switchFormTab(tab){
+  currentFormTab=tab;
+  document.getElementById('ftab-event').classList.toggle('active',tab==='event');
+  document.getElementById('ftab-community').classList.toggle('active',tab==='community');
+  document.getElementById('formEvent').classList.toggle('hidden',tab!=='event');
+  document.getElementById('formCommunity').classList.toggle('hidden',tab!=='community');
+}
+function submitActivity(){
+  var title=document.getElementById('f_title').value.trim();
+  var loc=document.getElementById('f_location').value.trim();
+  var date=document.getElementById('f_date').value;
+  if(!title){showToast('Nama kegiatan wajib diisi!','error');return;}
+  if(!loc){showToast('Lokasi wajib diisi!','error');return;}
+  if(!date){showToast('Tanggal wajib diisi!','error');return;}
+  var tagsRaw=document.getElementById('f_tags').value;
+  var tags=tagsRaw?tagsRaw.split(',').map(function(t){return t.trim();}).filter(Boolean):[];
+  var clrs=['#3b82f6','#84cc16','#f59e0b','#ec4899','#8b5cf6','#06b6d4','#f97316','#ef4444'];
+  var clr=clrs[nextId%clrs.length];
+  var ini=title.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase()||'RC';
+  ACTIVITIES.push({
+    id:nextId++,color:clr,icon:ini,title:title,
+    community:document.getElementById('f_community').value.trim()||'Komunitas Mandiri',
+    desc:document.getElementById('f_desc').value.trim()||'Kegiatan lari di Surabaya.',
+    location:loc,lat:-7.2756+(Math.random()-0.5)*0.12,lng:112.7378+(Math.random()-0.5)*0.14,
+    date:date,time:document.getElementById('f_time').value||'06:00',
+    jarak:document.getElementById('f_jarak').value,
+    level:document.getElementById('f_level').value,
+    pace:document.getElementById('f_pace').value.trim()||'6:00-7:00 /km',
+    type:document.getElementById('f_type').value,
+    wilayah:document.getElementById('f_wilayah').value,
+    category:document.getElementById('f_cat').value,
+    featured:false,tags:tags.length?tags:[document.getElementById('f_type').value],custom:true
+  });
+  closeAddForm(null);clearFilters();showToast('Kegiatan berhasil ditambahkan!');
+  document.getElementById('cardsSection').scrollIntoView({behavior:'smooth'});
+  ['f_title','f_community','f_location','f_date','f_desc','f_pace','f_tags'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+}
+function submitCommunity(){
+  var name=document.getElementById('fc_name').value.trim();
+  if(!name){showToast('Nama komunitas wajib diisi!','error');return;}
+  var clrs=['#3b82f6','#84cc16','#f59e0b','#ec4899','#8b5cf6'];
+  var clr=clrs[nextId%clrs.length];
+  var ini=name.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase()||'KM';
+  var kontak=document.getElementById('fc_contact').value.trim();
+  var sched=document.getElementById('fc_schedule').value.trim();
+  ACTIVITIES.push({
+    id:nextId++,color:clr,icon:ini,
+    title:sched?sched+' - '+name:name,community:name,
+    desc:(document.getElementById('fc_desc').value.trim()||'Komunitas lari di Surabaya.')+(kontak?' Kontak: '+kontak:''),
+    location:document.getElementById('fc_location').value.trim()||document.getElementById('fc_wilayah').value,
+    lat:-7.2756+(Math.random()-0.5)*0.12,lng:112.7378+(Math.random()-0.5)*0.14,
+    date:new Date(Date.now()+7*86400000).toISOString().split('T')[0],
+    time:'06:00',jarak:'5K',level:document.getElementById('fc_level').value,
+    pace:'6:00-8:00 /km',type:'Latihan Rutin',
+    wilayah:document.getElementById('fc_wilayah').value,
+    category:'Popular Communities',featured:false,
+    tags:[name,document.getElementById('fc_level').value],custom:true
+  });
+  closeAddForm(null);
+  clearFilters();
+  setCat(document.querySelector('.cat-tab[data-cat="Popular Communities"]'),'Popular Communities');
+  showToast('Komunitas berhasil didaftarkan!');
+  ['fc_name','fc_schedule','fc_location','fc_contact','fc_desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+}
+
+/* MAP */
+function initMap(){
+  var el=document.getElementById('map');if(!el)return;
+  if(mapInstance){setTimeout(function(){mapInstance.invalidateSize();},100);renderMapLocs();return;}
+  mapInstance=L.map('map',{zoomControl:true}).setView([-7.2756,112.7378],12);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'&copy; <a href="https://www.esri.com">Esri</a> &copy; OSM Contributors',
+    maxZoom:19
+  }).addTo(mapInstance);
+  ACTIVITIES.forEach(function(a){addMapMarker(a);});
+  renderMapLocs();
+}
+function addMapMarker(a){
+  if(!mapInstance)return;
+  var ih='<div style="background:'+a.color+';border:2px solid #fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.5)">'+a.icon+'</div>';
+  var icon=L.divIcon({html:ih,className:'',iconAnchor:[17,17]});
+  var popup='<div class="map-popup-box">'
+    +'<div class="map-popup-name">'+esc(a.title)+'</div>'
+    +'<div class="map-popup-addr">'+esc(a.location)+'</div>'
+    +'<div class="map-popup-comm">'+esc(a.community)+' &middot; '+a.jarak+' &middot; '+a.level+'</div>'
+    +'<button class="map-popup-btn" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination='+a.lat+','+a.lng+'\',\'_blank\')">Get Directions</button>'
+    +'<button class="map-popup-btn2" onclick="openModal('+a.id+')">Details</button>'
+    +'</div>';
+  leafMarkers[a.id]=L.marker([a.lat,a.lng],{icon:icon}).addTo(mapInstance).bindPopup(popup,{maxWidth:260});
+}
+function renderMapLocs(){
+  var q=(document.getElementById('mapSearchInput').value||'').toLowerCase();
+  var list=ACTIVITIES.filter(function(a){return !q||a.title.toLowerCase().indexOf(q)>=0||a.location.toLowerCase().indexOf(q)>=0;});
+  var cnt=document.getElementById('mapLocCount');
+  if(cnt) cnt.textContent=list.length;
+  document.getElementById('mapLocationsList').innerHTML=list.map(function(a){
+    return '<div class="map-loc-item" id="mloc-'+a.id+'" onclick="hlMapLoc('+a.id+')">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">'
+      +'<div style="width:28px;height:28px;border-radius:7px;background:'+a.color+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">'+a.icon+'</div>'
+      +'<div class="map-loc-name">'+esc(a.title)+'</div></div>'
+      +'<div class="map-loc-addr">'+esc(a.location)+'</div>'
+      +'<div class="map-loc-tags"><span class="map-loc-tag">'+a.level+'</span><span class="map-loc-tag">'+a.type+'</span></div>'
+      +'</div>';
+  }).join('');
+}
+function filterMapLocations(){renderMapLocs();}
+function hlMapLoc(id){
+  document.querySelectorAll('.map-loc-item').forEach(function(el){el.classList.remove('selected');});
+  var el=document.getElementById('mloc-'+id);
+  if(el){el.classList.add('selected');el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  var a=ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if(a&&mapInstance){
+    mapInstance.flyTo([a.lat,a.lng],15,{duration:1});
+    if(leafMarkers[id])leafMarkers[id].openPopup();
+  }
+}
+
+/* ROUTES */
+function initRoutesMap(){
+  var el=document.getElementById('routesMap');if(!el)return;
+  if(routesMapInstance){setTimeout(function(){routesMapInstance.invalidateSize();},100);renderRoutes();return;}
+  routesMapInstance=L.map('routesMap',{scrollWheelZoom:false,zoomControl:true}).setView([-7.2756,112.7378],11);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri &copy; OSM',maxZoom:19}).addTo(routesMapInstance);
+  ROUTES.forEach(function(r){
+    var m=L.circleMarker([r.lat,r.lng],{radius:9,color:r.color,fillColor:r.color,fillOpacity:0.85,weight:2})
+      .addTo(routesMapInstance).bindTooltip(r.name,{permanent:false,direction:'top'});
+    m.on('click',function(){selectRoute(r.id);});
+  });
+  renderRoutes();
+}
+function getFilteredRoutes(){
+  var data=ROUTES.slice();
+  var dist=document.getElementById('routeFilterDist').value||'';
+  var lev=document.getElementById('routeFilterLevel').value||'';
+  if(dist) data=data.filter(function(r){return r.dist===dist||(dist==='15K'&&r.dist==='15K');});
+  if(lev)  data=data.filter(function(r){return r.level===lev;});
+  if(currentArea!=='all') data=data.filter(function(r){return r.area===currentArea;});
+  return data;
+}
+function renderRoutes(){
+  var data=getFilteredRoutes();
+  var list=document.getElementById('routesList');if(!list)return;
+  if(!data.length){list.innerHTML='<div class="no-results"><p>Tidak ada rute sesuai filter.</p></div>';return;}
+  list.innerHTML=data.map(function(r){
+    var sel=selectedRouteId===r.id;
+    var lvlCls=r.level==='Beginner'?'badge-beginner':r.level==='Advanced'?'badge-advanced':'badge-intermediate';
+    return '<div class="route-card'+(sel?' selected':'')+'" onclick="selectRoute('+r.id+')">'
+      +'<div class="route-card-inner">'
+      +'<div class="route-card-img" style="background:linear-gradient(135deg,'+r.color+'22,'+r.color+'08)">'
+      +'<div style="width:52px;height:52px;border-radius:12px;background:'+r.color+';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;box-shadow:0 3px 12px '+r.color+'55">'+r.icon+'</div>'
+      +'</div>'
+      +'<div class="route-card-body">'
+      +'<div class="route-card-title">'+esc(r.name)+'</div>'
+      +'<div class="route-card-area">'+esc(r.area)+'</div>'
+      +'<div class="route-meta-row">'
+      +'<div class="route-meta-item"><strong>'+r.dist+'</strong></div>'
+      +'<div class="route-meta-item">'+r.duration+'</div>'
+      +'<div class="route-meta-item"><span class="card-badge '+lvlCls+'" style="font-size:10px;padding:2px 7px">'+r.level+'</span></div>'
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--blue3);margin-bottom:5px"><strong>Mulai:</strong> '+esc(r.start)+' &rarr; <strong>Akhir:</strong> '+esc(r.end)+'</div>'
+      +'<div class="route-card-desc">'+esc(r.desc)+'</div>'
+      +'<div class="route-card-btns">'
+      +'<button class="btn-route btn-rp" onclick="event.stopPropagation();selectRoute('+r.id+')">View Route</button>'
+      +'<button class="btn-route btn-rs" onclick="event.stopPropagation();startNav('+r.id+')">Start Navigation</button>'
+      +'</div></div></div></div>';
+  }).join('');
+}
+function selectRoute(id){
+  selectedRouteId=id;
+  var r=ROUTES.filter(function(x){return x.id===id;})[0];if(!r)return;
+  renderRoutes();
+  if(routesMapInstance){
+    routesMapInstance.flyTo([r.lat,r.lng],14,{duration:1});
+    routePolylines.forEach(function(p){p.remove();});routePolylines.length=0;
+    var pts=genPts(r.lat,r.lng,parseInt(r.dist)||5);
+    routePolylines.push(L.polyline(pts,{color:r.color,weight:4,opacity:0.9,dashArray:'8,4'}).addTo(routesMapInstance));
+    var si=L.divIcon({html:'<div style="background:'+r.color+';color:#fff;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.4)">START: '+r.start.substring(0,15)+'</div>',className:'',iconAnchor:[0,10]});
+    routePolylines.push(L.marker([r.lat,r.lng],{icon:si}).addTo(routesMapInstance));
+    var endPt=pts[Math.round(pts.length/2)];
+    var ei=L.divIcon({html:'<div style="background:#ef4444;color:#fff;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.4)">END: '+r.end.substring(0,15)+'</div>',className:'',iconAnchor:[0,10]});
+    routePolylines.push(L.marker(endPt,{icon:ei}).addTo(routesMapInstance));
+  }
+  document.getElementById('routesMapInfo').innerHTML=
+    '<div class="ri-row"><span>Rute</span><span class="ri-val">'+esc(r.name)+'</span></div>'
+    +'<div class="ri-row"><span>Wilayah</span><span class="ri-val">'+esc(r.area)+'</span></div>'
+    +'<div class="ri-row"><span>Jarak</span><span class="ri-val">'+r.dist+'</span></div>'
+    +'<div class="ri-row"><span>Estimasi</span><span class="ri-val">'+r.duration+'</span></div>'
+    +'<div class="ri-row"><span>Level</span><span class="ri-val">'+r.level+'</span></div>'
+    +'<div class="ri-row"><span>Mulai</span><span class="ri-val" style="font-size:11px">'+esc(r.start)+'</span></div>'
+    +'<div class="ri-row"><span>Akhir</span><span class="ri-val" style="font-size:11px">'+esc(r.end)+'</span></div>'
+    +'<div style="margin-top:8px;font-size:11px;color:var(--gray400)">'+esc(r.suitable)+'</div>'
+    +'<div style="margin-top:5px;font-size:10px;color:var(--gray600)">Data Demo - Jalur bersifat ilustrasi</div>';
+}
+function genPts(lat,lng,km){
+  var deg=km*0.004,pts=[];
+  for(var i=0;i<=24;i++){
+    var t=i/24*Math.PI*2;
+    pts.push([lat+deg*0.6*Math.sin(t)+deg*0.08*Math.sin(t*3),lng+deg*0.4*Math.cos(t)+deg*0.05*Math.cos(t*2)]);
+  }
+  return pts;
+}
+function startNav(id){
+  var r=ROUTES.filter(function(x){return x.id===id;})[0];if(!r)return;
+  window.open('https://www.google.com/maps/dir/?api=1&destination='+r.lat+','+r.lng,'_blank');
+  showToast('Membuka navigasi ke titik awal rute '+r.name,'info');
+}
+function setAreaTab(el,area){
+  document.querySelectorAll('.area-tab').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');currentArea=area;renderRoutes();
+}
+function filterRoutes(){renderRoutes();}
+function clearRouteFilters(){
+  document.getElementById('routeFilterDist').value='';
+  document.getElementById('routeFilterLevel').value='';
+  currentArea='all';
+  document.querySelectorAll('.area-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelector('.area-tab[data-area="all"]').classList.add('active');
+  renderRoutes();
+}
+
+/* TOAST */
+function showToast(msg,type){
+  type=type||'success';
+  var c=document.getElementById('toastContainer');
+  var t=document.createElement('div');t.className='toast '+type;t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(function(){t.style.animation='fadeOut 0.3s ease forwards';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);},3200);
+}
+
+/* KEYBOARD */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.getElementById('addOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+});
+
+/* INIT */
+renderCards();
+renderFeatured();
+</script>
+</body>
+</html>
