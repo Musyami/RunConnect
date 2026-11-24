@@ -26,7 +26,8 @@ a{text-decoration:none;color:inherit}
 .nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:68px}
 .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;transition:opacity var(--tr)}
 .nav-logo:hover{opacity:0.85}
-.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--blue),var(--lime));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--blue),var(--lime));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.logo-icon img{width:40px;height:40px;object-fit:cover;border-radius:10px}
 .logo-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .logo-text{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px}
 .logo-text span{color:var(--lime2)}
@@ -329,10 +330,50 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
 .map-popup-btn{background:#1d6be8;color:#fff;padding:5px 11px;border-radius:5px;font-size:11px;font-weight:600;border:none;cursor:pointer;margin-right:5px}
 .map-popup-btn2{background:#84cc16;color:#0a0f1e;padding:5px 11px;border-radius:5px;font-size:11px;font-weight:600;border:none;cursor:pointer}
 
+/* COMMUNITY PAGE */
+.community-page{padding-bottom:60px}
+.comm-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);padding:50px 24px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06);position:relative;overflow:hidden}
+.comm-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 100%,rgba(29,107,232,0.1) 0%,transparent 70%)}
+.comm-hero-content{position:relative}
+.comm-hero h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:10px}
+.comm-hero p{color:var(--gray400);font-size:15px}
+.comm-container{max-width:1280px;margin:0 auto;padding:32px 24px}
+.comm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.comm-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;transition:var(--tr)}
+.comm-card:hover{border-color:rgba(29,107,232,0.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(29,107,232,0.15)}
+.comm-card-top{height:80px;display:flex;align-items:center;padding:0 20px;gap:16px;position:relative}
+.comm-card-avatar{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0}
+.comm-card-name{font-size:15px;font-weight:700;line-height:1.3}
+.comm-card-area{font-size:11px;color:var(--lime2);font-weight:500;margin-top:2px}
+.comm-card-body{padding:14px 20px 18px}
+.comm-card-desc{font-size:12px;color:var(--gray400);line-height:1.6;margin-bottom:12px}
+.comm-card-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.comm-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray400)}
+.comm-meta-item svg{width:12px;height:12px;stroke:var(--blue3);fill:none;stroke-width:2;flex-shrink:0}
+.comm-meta-item strong{color:#fff}
+.comm-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.comm-tag{padding:2px 8px;border-radius:50px;font-size:10px;background:rgba(29,107,232,0.1);border:1px solid rgba(29,107,232,0.2);color:var(--blue3)}
+.btn-join-comm{width:100%;padding:9px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-join-comm:hover{opacity:0.9;transform:translateY(-1px)}
+.comm-filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:24px}
+/* WA MODAL */
+.wa-modal{background:var(--navy2);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);max-width:420px;width:100%;transform:translateY(20px);transition:transform 0.25s ease;padding:0}
+.modal-overlay.open .wa-modal{transform:translateY(0)}
+.wa-modal-header{background:linear-gradient(135deg,#25d366,#128c7e);padding:22px 22px 18px;border-radius:var(--radius) var(--radius) 0 0;position:relative;text-align:center}
+.wa-modal-header h3{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.wa-modal-header p{font-size:12px;opacity:0.85}
+.wa-modal-body{padding:22px}
+.wa-comm-name{font-size:15px;font-weight:700;margin-bottom:6px;color:#fff}
+.wa-comm-desc{font-size:12px;color:var(--gray400);margin-bottom:16px;line-height:1.6}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px;border-radius:var(--radius-sm);background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:var(--tr);margin-bottom:8px}
+.btn-wa:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-wa-cancel{display:block;width:100%;padding:10px;border-radius:var(--radius-sm);background:transparent;color:var(--gray400);font-size:13px;font-weight:500;border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:var(--tr)}
+.btn-wa-cancel:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+
 /* RESPONSIVE */
 @media(max-width:1100px){.routes-content{grid-template-columns:1fr}}
 @media(max-width:1024px){.map-layout{flex-direction:column}.map-sidebar{width:100%;min-width:unset;height:280px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.08)}.map-container{flex:1;min-height:400px}}
-@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}.cards-grid{grid-template-columns:1fr}.hero-stats{gap:24px}.modal-details{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr;gap:36px}.about-stats{grid-template-columns:repeat(2,1fr)}.route-card-inner{flex-direction:column}.route-card-img{width:100%;height:80px}.form-row{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}.cards-grid{grid-template-columns:1fr}.hero-stats{gap:24px}.modal-details{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr;gap:36px}.about-stats{grid-template-columns:repeat(2,1fr)}.route-card-inner{flex-direction:column}.route-card-img{width:100%;height:80px}.form-row{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}}
 @media(max-width:480px){.about-stats{grid-template-columns:1fr 1fr}.hero-stats{gap:16px}.stat-num{font-size:1.5rem}.card-actions{flex-wrap:wrap}.btn-map{width:100%}}
 .hidden{display:none!important}
 .fade-in{animation:fadeInUp 0.35s ease both}
@@ -347,25 +388,26 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
   <div class="nav-inner">
     <div class="nav-logo" onclick="navigate('home')">
       <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
+        <img src="c:\Users\asus\Downloads\dreamina-2026-11-24-3560-Geometric app icon no text. Stylized run....jpeg" alt="RunConnect Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <svg viewBox="0 0 24 24" style="display:none"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
       </div>
       <div class="logo-text">Run<span>Connect</span></div>
     </div>
     <ul class="nav-links">
-      <li><a id="nav-home"   onclick="navigate('home')"   class="active">Home</a></li>
-      <li><a id="nav-map"    onclick="navigate('map')">Running Map</a></li>
-      <li><a id="nav-routes" onclick="navigate('routes')">Running Routes</a></li>
-      <li><a id="nav-about"  onclick="navigate('about')">About Us</a></li>
+      <li><a id="nav-home"      onclick="navigate('home')"      class="active">Home</a></li>
+      <li><a id="nav-routes"    onclick="navigate('routes')">Running Routes</a></li>
+      <li><a id="nav-community" onclick="navigate('community')">Community</a></li>
+      <li><a id="nav-about"     onclick="navigate('about')">About Us</a></li>
     </ul>
     <button class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
-  <a id="mnav-home"   onclick="navigate('home');toggleMobile()"   class="active">Home</a>
-  <a id="mnav-map"    onclick="navigate('map');toggleMobile()">Running Map</a>
-  <a id="mnav-routes" onclick="navigate('routes');toggleMobile()">Running Routes</a>
-  <a id="mnav-about"  onclick="navigate('about');toggleMobile()">About Us</a>
+  <a id="mnav-home"      onclick="navigate('home');toggleMobile()"      class="active">Home</a>
+  <a id="mnav-routes"    onclick="navigate('routes');toggleMobile()">Running Routes</a>
+  <a id="mnav-community" onclick="navigate('community');toggleMobile()">Community</a>
+  <a id="mnav-about"     onclick="navigate('about');toggleMobile()">About Us</a>
 </div>
 
 <!-- PAGE 1: HOME -->
@@ -464,32 +506,6 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
   Tambah Kegiatan
 </button>
 
-<!-- PAGE 2: RUNNING MAP -->
-<div id="page-map" class="page">
-  <div class="map-layout">
-    <div class="map-sidebar">
-      <div class="map-sbar-hdr">
-        <div class="map-sbar-title-row">
-          <div class="map-sbar-title">Lokasi Komunitas &amp; Kegiatan</div>
-          <div class="map-sbar-count" id="mapLocCount">12</div>
-        </div>
-        <div class="map-search-wrap">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" class="map-search-input" placeholder="Cari lokasi atau kegiatan..." id="mapSearchInput" oninput="filterMapLocations()"/>
-        </div>
-      </div>
-      <div class="map-locs-list" id="mapLocationsList"></div>
-    </div>
-    <div class="map-container">
-      <div id="map"></div>
-      <div class="map-info-panel">
-        <span class="map-demo-badge">DEMO</span>
-        Data Lokasi Representasi Wilayah Surabaya
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- PAGE 3: RUNNING ROUTES -->
 <div id="page-routes" class="page routes-page">
   <div class="routes-hero">
@@ -532,12 +548,64 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
   </div>
 </div>
 
-<!-- PAGE 4: ABOUT US -->
+<!-- PAGE 4: COMMUNITY -->
+<div id="page-community" class="page community-page">
+  <div class="comm-hero">
+    <div class="comm-hero-content">
+      <div class="hero-badge" style="margin-bottom:16px">Komunitas Lari Surabaya &amp; Dunia</div>
+      <h2>Komunitas Lari <em style="color:var(--lime2)">Surabaya</em></h2>
+      <p>Temukan dan bergabung dengan komunitas lari aktif di Surabaya. Bersama lebih menyenangkan!</p>
+    </div>
+  </div>
+  <div class="comm-container">
+    <div class="comm-filter-row">
+      <select class="filter-select" id="commFilterArea" onchange="renderCommunities()">
+        <option value="">Semua Wilayah</option>
+        <option>Surabaya Pusat</option>
+        <option>Surabaya Timur</option>
+        <option>Surabaya Barat</option>
+        <option>Surabaya Utara</option>
+        <option>Surabaya Selatan</option>
+        <option>Internasional</option>
+      </select>
+      <select class="filter-select" id="commFilterLevel" onchange="renderCommunities()">
+        <option value="">Semua Level</option>
+        <option>Beginner</option>
+        <option>Intermediate</option>
+        <option>Advanced</option>
+        <option>Semua Level</option>
+      </select>
+      <button class="btn-clear" onclick="clearCommFilters()">Reset Filter</button>
+    </div>
+    <div class="comm-grid" id="commGrid"></div>
+  </div>
+</div>
+
+<!-- WA JOIN MODAL -->
+<div class="modal-overlay" id="waOverlay" onclick="closeWaModal(event)">
+  <div class="wa-modal" onclick="event.stopPropagation()">
+    <div class="wa-modal-header">
+      <h3>&#x1F7E2; Hubungi Admin Komunitas</h3>
+      <p>Tekan tombol di bawah untuk chat via WhatsApp</p>
+    </div>
+    <div class="wa-modal-body">
+      <div class="wa-comm-name" id="waCommName"></div>
+      <div class="wa-comm-desc" id="waCommDesc"></div>
+      <a class="btn-wa" id="waLink" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.574 3.842 1.565 5.408L2.045 22l4.701-1.489A9.962 9.962 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.952 7.952 0 01-4.065-1.112l-.29-.173-3.013.955.956-2.937-.19-.301A7.955 7.955 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/></svg>
+        Chat WhatsApp Admin
+      </a>
+      <button class="btn-wa-cancel" onclick="closeWaModal(null)">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: ABOUT US -->
 <div id="page-about" class="page about-page">
   <div class="about-hero">
     <div class="about-hero-content">
-      <div class="about-logo-big">
-        <svg viewBox="0 0 24 24"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
+      <div class="about-logo-big" style="overflow:hidden;padding:0;background:none;box-shadow:none">
+        <img src="c:\Users\asus\Downloads\dreamina-2026-11-24-3560-Geometric app icon no text. Stylized run....jpeg" alt="RunConnect Logo" style="width:70px;height:70px;object-fit:cover;border-radius:18px;box-shadow:0 0 40px rgba(29,107,232,0.4)" onerror="this.parentElement.style.background='linear-gradient(135deg,var(--blue),var(--lime))';this.parentElement.style.padding='';this.style.display='none';this.parentElement.innerHTML+='<svg viewBox=\'0 0 24 24\' style=\'width:38px;height:38px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round\'><path d=\'M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z\'/><path d=\'M6 20l2-6 3 2 2-6 2 2h3\'/><path d=\'M9 14l-3 2\'/></svg>'"/>
       </div>
       <h2>Tentang RunConnect</h2>
       <p>Platform digital yang menghubungkan para pelari dengan komunitas, jadwal latihan, event, dan rute lari di Surabaya dalam satu tempat.</p>
@@ -583,24 +651,28 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
     <p class="team-sub">RunConnect dikembangkan oleh tim yang bersemangat membangun ekosistem lari Surabaya</p>
     <div class="team-grid">
       <div class="team-card">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#1d6be8,#3b82f6)">RC</div>
-        <div class="team-name">RunConnect Team</div>
-        <div class="team-role">Product &amp; Development</div>
+        <div class="team-avatar" style="background:linear-gradient(135deg,#1d6be8,#3b82f6)">JG</div>
+        <div class="team-name">Joshua Gamaliel</div>
       </div>
       <div class="team-card">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#84cc16,#a3e635)">UI</div>
-        <div class="team-name">Design Team</div>
-        <div class="team-role">UI/UX &amp; Branding</div>
+        <div class="team-avatar" style="background:linear-gradient(135deg,#84cc16,#a3e635)">RE</div>
+        <div class="team-name">Rheynody Ezekielano L</div>
       </div>
       <div class="team-card">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">CM</div>
-        <div class="team-name">Community Manager</div>
-        <div class="team-role">Komunitas &amp; Konten</div>
+        <div class="team-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">AM</div>
+        <div class="team-name">Azzahra Maulin Qiromah</div>
       </div>
       <div class="team-card">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">OP</div>
-        <div class="team-name">Operations</div>
-        <div class="team-role">Event &amp; Partnership</div>
+        <div class="team-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">MR</div>
+        <div class="team-name">Muhammad Rasya Islami</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#ef4444,#f87171)">AV</div>
+        <div class="team-name">Avridzal Mauladhany Purwanto</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)">NC</div>
+        <div class="team-name">Nickolas Christian Budi</div>
       </div>
     </div>
   </div>
@@ -649,8 +721,7 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
       <div class="modal-desc" id="modalDesc"></div>
       <div class="modal-details" id="modalDetails"></div>
       <div class="modal-actions">
-        <button class="btn-modal-map" onclick="openMapFromModal()">Lihat di Peta</button>
-        <button class="btn-modal-join" id="modalJoinBtn" onclick="rsvpFromModal()">Daftar / RSVP</button>
+        <button class="btn-modal-join" id="modalJoinBtn" onclick="rsvpFromModal()" style="flex:1">Daftar / RSVP</button>
       </div>
     </div>
   </div>
@@ -793,16 +864,17 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
 
 <footer id="mainFooter">
   <div class="footer-logo">
-    <div class="logo-icon" style="width:32px;height:32px">
-      <svg viewBox="0 0 24 24"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
+    <div class="logo-icon" style="width:32px;height:32px;overflow:hidden">
+      <img src="c:\Users\asus\Downloads\dreamina-2026-11-24-3560-Geometric app icon no text. Stylized run....jpeg" alt="Logo" style="width:32px;height:32px;object-fit:cover;border-radius:8px" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+      <svg viewBox="0 0 24 24" style="display:none"><path d="M13 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/><path d="M6 20l2-6 3 2 2-6 2 2h3"/><path d="M9 14l-3 2"/></svg>
     </div>
     <span style="font-family:'Space Grotesk';font-weight:700;font-size:16px">Run<span style="color:var(--lime2)">Connect</span></span>
   </div>
   <p class="footer-desc">Platform digital komunitas lari Surabaya - Menghubungkan pelari, komunitas, dan event dalam satu tempat.</p>
   <div class="footer-links">
     <a onclick="navigate('home')">Home</a>
-    <a onclick="navigate('map')">Running Map</a>
     <a onclick="navigate('routes')">Running Routes</a>
+    <a onclick="navigate('community')">Community</a>
     <a onclick="navigate('about')">About Us</a>
   </div>
   <p class="footer-copy">&#169; 2025 <span>RunConnect</span> &#183; Surabaya, Jawa Timur &#183; Prototype MVP</p>
@@ -811,172 +883,314 @@ footer{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);paddi
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 var ACTIVITIES = [
-  {id:1,color:'#3b82f6',icon:'RC',title:'Morning Sunrise Run SBY',community:'Komunitas Pelari Surabaya (KPS)',
-   desc:'Lari pagi bersama di sepanjang Jalan Darmo dengan suasana kota yang masih segar. Cocok untuk pemula yang ingin membangun rutinitas lari.',
-   location:'Jl. Raya Darmo, Surabaya Pusat',lat:-7.2908,lng:112.7340,
-   date:'2025-12-07',time:'05:30',jarak:'5K',level:'Beginner',
+  {id:1,color:'#3b82f6',icon:'RC',title:'Morning Run Jl. Darmo bersama KPS',community:'Komunitas Pelari Surabaya (KPS)',
+   desc:'Lari pagi bersama di sepanjang Jalan Darmo setiap Minggu pagi. Komunitas aktif sejak 2015. Start di Taman Mayangkara.',
+   location:'Taman Mayangkara, Jl. Darmo, Surabaya Pusat',lat:-7.2908,lng:112.7340,
+   date:'2026-01-04',time:'05:30',jarak:'5K',level:'Beginner',
    pace:'7:00-8:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Pusat',
-   category:'Beginner Friendly',featured:true,tags:['Pemula','Pagi','Jl. Darmo'],custom:false},
-  {id:2,color:'#f59e0b',icon:'HM',title:'Surabaya Half Marathon 2025',community:'Surabaya Running Festival',
-   desc:'Event lari akbar tahunan Surabaya dengan kategori 5K, 10K, dan Half Marathon. Hadiah total Rp 150 juta.',
-   location:'Monumen Tugu Pahlawan, Surabaya Utara',lat:-7.2459,lng:112.7378,
-   date:'2025-12-21',time:'05:00',jarak:'10K',level:'Intermediate',
-   pace:'5:30-6:30 /km',type:'Event',wilayah:'Surabaya Utara',
-   category:'Running Events',featured:true,tags:['Event','Kompetisi','Half Marathon'],custom:false},
-  {id:3,color:'#84cc16',icon:'GR',title:'Eco Run Kebun Binatang',community:'Green Runners Surabaya',
-   desc:'Lari santai mengelilingi area sekitar Kebun Binatang Surabaya di pagi hari. Program ramah lingkungan.',
-   location:'Kebun Binatang Surabaya, Surabaya Selatan',lat:-7.3027,lng:112.7362,
-   date:'2025-12-13',time:'06:00',jarak:'5K',level:'Beginner',
-   pace:'7:30-9:00 /km',type:'Fun Run',wilayah:'Surabaya Selatan',
-   category:'Beginner Friendly',featured:false,tags:['Pemula','Eco','Fun Run'],custom:false},
-  {id:4,color:'#ef4444',icon:'SS',title:'East Side Speed Training',community:'Surabaya Speed Club',
-   desc:'Sesi latihan kecepatan intensif di area Kenjeran. Fokus pada interval training dan peningkatan pace.',
-   location:'Pantai Kenjeran, Surabaya Timur',lat:-7.2277,lng:112.8064,
-   date:'2025-12-10',time:'05:30',jarak:'10K',level:'Advanced',
-   pace:'4:30-5:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Timur',
-   category:'Weekly Running',featured:false,tags:['Speed','Interval','Advanced'],custom:false},
-  {id:5,color:'#8b5cf6',icon:'CR',title:'West Side Weekly Run',community:'Citraland Runners',
-   desc:'Lari rutin mingguan di kawasan Citraland. Rute melewati jalan-jalan perumahan yang nyaman.',
-   location:'CitraLand, Surabaya Barat',lat:-7.2885,lng:112.6639,
-   date:'2025-12-14',time:'05:00',jarak:'5K',level:'Beginner',
+   category:'Beginner Friendly',featured:true,tags:['Pemula','Pagi','Jl. Darmo','KPS'],custom:false},
+  {id:2,color:'#f59e0b',icon:'SF',title:'Surabaya Running Festival 2026',community:'Surabaya Running Festival',
+   desc:'Event lari bergengsi tahunan di Gelora Bung Tomo. Kategori 5K, 10K, Half Marathon (21K). Didukung Pemkot Surabaya.',
+   location:'Stadion Gelora Bung Tomo, Surabaya Barat',lat:-7.3100,lng:112.6500,
+   date:'2026-02-15',time:'05:00',jarak:'10K',level:'Intermediate',
+   pace:'5:30-6:30 /km',type:'Event',wilayah:'Surabaya Barat',
+   category:'Running Events',featured:true,tags:['Event','Half Marathon','GBT','Official'],custom:false},
+  {id:3,color:'#84cc16',icon:'SR',title:'Sunday Run Taman Bungkul',community:'Surabaya Runners Community',
+   desc:'Lari santai mingguan di Taman Bungkul setiap Minggu pagi. Komunitas terbesar di Surabaya Selatan, terbuka semua level.',
+   location:'Taman Bungkul, Jl. Raya Darmo, Surabaya Selatan',lat:-7.2994,lng:112.7378,
+   date:'2026-01-05',time:'06:00',jarak:'5K',level:'Beginner',
+   pace:'7:30-9:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Selatan',
+   category:'Beginner Friendly',featured:false,tags:['Pemula','Taman Bungkul','Minggu'],custom:false},
+  {id:5,color:'#8b5cf6',icon:'CR',title:'West Side Weekly Run Citraland',community:'Citraland Runners',
+   desc:'Lari rutin mingguan di kawasan perumahan Citraland. Jalan bersih, minim kendaraan, cocok untuk keluarga.',
+   location:'CitraLand Boulevard, Surabaya Barat',lat:-7.2885,lng:112.6639,
+   date:'2026-01-11',time:'05:00',jarak:'5K',level:'Beginner',
    pace:'6:30-8:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Barat',
    category:'Weekly Running',featured:true,tags:['Rutin','Keluarga','Citraland'],custom:false},
-  {id:6,color:'#f97316',icon:'HR',title:'Heritage City Run',community:'Surabaya Heritage Runners',
-   desc:'Berlari sambil menjelajahi bangunan-bangunan bersejarah di pusat kota Surabaya.',
+  {id:6,color:'#f97316',icon:'HR',title:'Heritage City Run Kota Lama',community:'Surabaya Heritage Runners',
+   desc:'Berlari menjelajahi kawasan kota lama — Jembatan Merah, Tugu Pahlawan, dan bangunan kolonial. Ada pemandu sejarah.',
    location:'Jembatan Merah, Surabaya Utara',lat:-7.2401,lng:112.7378,
-   date:'2025-12-20',time:'06:30',jarak:'5K',level:'Beginner',
+   date:'2026-01-18',time:'06:30',jarak:'5K',level:'Beginner',
    pace:'7:00-8:30 /km',type:'Fun Run',wilayah:'Surabaya Utara',
-   category:'Popular Communities',featured:false,tags:['Heritage','Wisata','City Run'],custom:false},
-  {id:7,color:'#06b6d4',icon:'NR',title:'Night Run Surabaya 10K',community:'Night Runners SBY',
-   desc:'Berlari di malam hari menyusuri jalan protokol Surabaya dengan penerangan kota yang indah.',
-   location:'GOR Jl. Indragiri, Surabaya Pusat',lat:-7.2730,lng:112.7417,
-   date:'2025-12-27',time:'19:00',jarak:'10K',level:'Intermediate',
+   category:'Popular Communities',featured:false,tags:['Heritage','Wisata','Kota Lama'],custom:false},
+  {id:7,color:'#06b6d4',icon:'NR',title:'Surabaya Night Run 10K',community:'Night Runners SBY',
+   desc:'Event lari malam bergengsi menyusuri Jl. Basuki Rahmat dan Jl. Pemuda. Digelar rutin tiap akhir tahun, 2.000+ peserta.',
+   location:'Tunjungan Plaza, Jl. Basuki Rahmat, Surabaya Pusat',lat:-7.2574,lng:112.7399,
+   date:'2026-01-25',time:'18:30',jarak:'10K',level:'Intermediate',
    pace:'5:30-6:30 /km',type:'Event',wilayah:'Surabaya Pusat',
-   category:'Running Events',featured:true,tags:['Night Run','Event','Malam'],custom:false},
-  {id:8,color:'#84cc16',icon:'RS',title:'Beginner 3K Training Program',community:'RunStart Surabaya',
-   desc:'Program latihan terstruktur 8 minggu khusus untuk pelari pemula. Dibimbing oleh pelatih berpengalaman.',
-   location:'Lapangan UNAIR, Surabaya Timur',lat:-7.2777,lng:112.7960,
-   date:'2025-12-08',time:'06:00',jarak:'3K',level:'Beginner',
+   category:'Running Events',featured:true,tags:['Night Run','Event','Malam','Tunjungan'],custom:false},
+  {id:8,color:'#84cc16',icon:'RS',title:'Beginner Training di Lapangan UNAIR',community:'RunStart Surabaya',
+   desc:'Program latihan 8 minggu khusus pemula di kampus UNAIR. Dibimbing pelatih bersertifikat IAAF.',
+   location:'Lapangan UNAIR, Jl. Airlangga, Surabaya Timur',lat:-7.2660,lng:112.7694,
+   date:'2026-01-07',time:'06:00',jarak:'3K',level:'Beginner',
    pace:'8:00-10:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Timur',
-   category:'Beginner Friendly',featured:false,tags:['Pemula','Program','Coach','3K'],custom:false},
-  {id:9,color:'#ef4444',icon:'SA',title:'Speed Interval Track SBY',community:'Surabaya Athletics Club',
-   desc:'Latihan interval di lintasan atletik resmi. Program khusus meningkatkan kecepatan dan stamina.',
+   category:'Beginner Friendly',featured:false,tags:['Pemula','Program','Coach','UNAIR'],custom:false},
+  {id:9,color:'#ef4444',icon:'SA',title:'Track Training di Stadion GBT',community:'Surabaya Athletics Club',
+   desc:'Latihan interval di lintasan atletik resmi Stadion Gelora Bung Tomo. Fasilitas standar internasional, buka tiap Sabtu pagi.',
    location:'Stadion Gelora Bung Tomo, Surabaya Barat',lat:-7.3100,lng:112.6500,
-   date:'2025-12-09',time:'05:00',jarak:'10K',level:'Advanced',
+   date:'2026-01-10',time:'05:00',jarak:'10K',level:'Advanced',
    pace:'4:00-4:30 /km',type:'Latihan Rutin',wilayah:'Surabaya Barat',
    category:'Weekly Running',featured:false,tags:['Track','Interval','Sprint','GBT'],custom:false},
   {id:10,color:'#ec4899',icon:'RR',title:'Rungkut Sunday Fun Run',community:'Rungkut Runners',
-   desc:'Fun run keluarga setiap Minggu pagi di kawasan Rungkut. Suasana seru dan santai bersama komunitas lokal.',
-   location:'Perumahan Rungkut, Surabaya Timur',lat:-7.3310,lng:112.7893,
-   date:'2025-12-21',time:'06:00',jarak:'5K',level:'Beginner',
+   desc:'Fun run keluarga tiap Minggu pagi di Rungkut Mapan. Komunitas hangat, cocok bawa anak dan pasangan.',
+   location:'Perumahan Rungkut Mapan, Surabaya Timur',lat:-7.3310,lng:112.7893,
+   date:'2026-01-05',time:'06:00',jarak:'5K',level:'Beginner',
    pace:'7:00-9:00 /km',type:'Fun Run',wilayah:'Surabaya Timur',
-   category:'Popular Communities',featured:false,tags:['Keluarga','Fun Run','Minggu'],custom:false},
-  {id:11,color:'#f59e0b',icon:'ER',title:'Surabaya 15K Challenge',community:'Elite Runners Surabaya',
-   desc:'Tantangan lari jarak menengah 15K untuk pelari berpengalaman. Rute bervariasi melewati beberapa wilayah.',
+   category:'Popular Communities',featured:false,tags:['Keluarga','Fun Run','Minggu','Rungkut'],custom:false},
+  {id:11,color:'#f59e0b',icon:'BM',title:'Borobudur Marathon 2026 Delegation SBY',community:'Elite Runners Surabaya',
+   desc:'Rombongan pelari Surabaya untuk Borobudur Marathon 2026. Latihan bersama tiap akhir pekan di Taman Bungkul.',
    location:'Taman Bungkul, Surabaya Selatan',lat:-7.2994,lng:112.7378,
-   date:'2025-12-28',time:'05:00',jarak:'15K+',level:'Advanced',
+   date:'2026-11-15',time:'05:00',jarak:'15K+',level:'Advanced',
    pace:'5:00-5:30 /km',type:'Event',wilayah:'Surabaya Selatan',
-   category:'Running Events',featured:true,tags:['Advanced','15K','Challenge'],custom:false},
-  {id:12,color:'#84cc16',icon:'C5',title:'Couch to 5K Surabaya',community:'RunStart Surabaya',
-   desc:'Program Couch to 5K yang telah membantu ribuan pemula berlari. 9 minggu terstruktur dari nol hingga 5K.',
-   location:'Taman Flora, Surabaya Timur',lat:-7.3010,lng:112.7996,
-   date:'2025-12-06',time:'06:30',jarak:'3K',level:'Beginner',
+   category:'Running Events',featured:true,tags:['Advanced','Marathon','Nasional','Borobudur'],custom:false},
+  {id:12,color:'#84cc16',icon:'C5',title:'Couch to 5K di Taman Flora',community:'RunStart Surabaya',
+   desc:'Program C25K gratis tiap Rabu & Sabtu pagi di Taman Flora. Sudah membantu 500+ pelari pemula.',
+   location:'Taman Flora, Jl. Manyar Kertoarjo, Surabaya Timur',lat:-7.3010,lng:112.7996,
+   date:'2026-01-07',time:'06:30',jarak:'3K',level:'Beginner',
    pace:'8:00-12:00 /km',type:'Latihan Rutin',wilayah:'Surabaya Timur',
-   category:'Beginner Friendly',featured:false,tags:['C25K','Pemula','Program'],custom:false}
+   category:'Beginner Friendly',featured:false,tags:['C25K','Pemula','Gratis','Taman Flora'],custom:false},
+  {id:13,color:'#a855f7',icon:'PK',title:'Parkrun Surabaya #247',community:'Parkrun Surabaya',
+   desc:'Event Parkrun 5K gratis, terukur, dan terdokumentasi tiap Sabtu pagi di Taman Bungkul. Bagian dari gerakan Parkrun global (23 negara).',
+   location:'Taman Bungkul, Jl. Raya Darmo, Surabaya Selatan',lat:-7.2994,lng:112.7378,
+   date:'2026-01-10',time:'07:30',jarak:'5K',level:'Beginner',
+   pace:'6:00-10:00 /km',type:'Fun Run',wilayah:'Surabaya Selatan',
+   category:'Popular Communities',featured:false,tags:['Parkrun','Gratis','5K','Global'],custom:false},
+  {id:14,color:'#0ea5e9',icon:'H3',title:'Hash House Harriers Surabaya Run',community:'Hash House Harriers (H3) SBY',
+   desc:'Non-competitive "running & drinking" club. Rute baru tiap minggu, suasana santai dan penuh tawa. Cocok yang bosan lari serius.',
+   location:'Berbagai titik Surabaya (bergilir)',lat:-7.2648,lng:112.7523,
+   date:'2026-01-12',time:'17:30',jarak:'5K',level:'Beginner',
+   pace:'8:00-12:00 /km',type:'Fun Run',wilayah:'Surabaya Pusat',
+   category:'Popular Communities',featured:false,tags:['H3','Non-Kompetitif','Santai','Global'],custom:false},
+  {id:15,color:'#f43f5e',icon:'SM',title:'Surabaya Marathon 2026',community:'Surabaya Marathon Official',
+   desc:'Marathon resmi kota Surabaya — Full 42K, Half 21K, 10K. Start finish di Balai Kota Surabaya. Didukung penuh Pemkot. Salah satu event lari terbesar Jatim.',
+   location:'Balai Kota Surabaya, Jl. Jimerto',lat:-7.2548,lng:112.7382,
+   date:'2026-05-10',time:'04:30',jarak:'15K+',level:'Advanced',
+   pace:'5:00-6:00 /km',type:'Event',wilayah:'Surabaya Pusat',
+   category:'Running Events',featured:true,tags:['Marathon','Resmi','Pemkot','42K'],custom:false},
+  {id:16,color:'#10b981',icon:'GR',title:'Green Run Kebun Binatang Surabaya',community:'Green Runners Surabaya',
+   desc:'Fun run ramah lingkungan mengelilingi area sekitar Kebun Binatang Surabaya. Peserta diwajibkan bawa tumbler. Zero waste event.',
+   location:'Kebun Binatang Surabaya, Jl. Setail, Surabaya Selatan',lat:-7.3027,lng:112.7362,
+   date:'2026-02-01',time:'06:00',jarak:'5K',level:'Beginner',
+   pace:'7:30-9:00 /km',type:'Fun Run',wilayah:'Surabaya Selatan',
+   category:'Beginner Friendly',featured:false,tags:['Eco','Green','Fun Run','Kebun Binatang'],custom:false},
+  {id:17,color:'#f97316',icon:'IK',title:'ITS Campus Run 2026',community:'East Runners Surabaya',
+   desc:'Event lari tahunan di dalam kampus ITS Sukolilo. Rute melewati ikon-ikon kampus dengan atmosfer pelajar yang meriah.',
+   location:'Kampus ITS, Jl. Raya ITS, Surabaya Timur',lat:-7.2819,lng:112.7975,
+   date:'2026-03-21',time:'06:00',jarak:'5K',level:'Beginner',
+   pace:'6:30-8:30 /km',type:'Event',wilayah:'Surabaya Timur',
+   category:'Running Events',featured:false,tags:['ITS','Kampus','Fun Run','Mahasiswa'],custom:false},
+  {id:18,color:'#8b5cf6',icon:'WN',title:'Wonokromo Weekend Long Run',community:'Elite Runners Surabaya',
+   desc:'Long run akhir pekan di koridor Ahmad Yani. Rute 15K menyusuri jalan protokol terpanjang Surabaya dari selatan ke utara.',
+   location:'Taman Pelangi, Jl. Ahmad Yani, Surabaya Selatan',lat:-7.3250,lng:112.7310,
+   date:'2026-01-17',time:'05:00',jarak:'15K+',level:'Advanced',
+   pace:'5:00-5:45 /km',type:'Latihan Rutin',wilayah:'Surabaya Selatan',
+   category:'Weekly Running',featured:false,tags:['Long Run','Ahmad Yani','Advanced','Weekend'],custom:false},
+  {id:19,color:'#06b6d4',icon:'KL',title:'Kalimas Heritage Run',community:'Surabaya Heritage Runners',
+   desc:'Lari sore menyusuri tepi Sungai Kalimas dari Monumen Kapal Selam hingga Jembatan Merah. Menikmati sunset Kalimas sambil berlari.',
+   location:'Monumen Kapal Selam, Jl. Pemuda, Surabaya Pusat',lat:-7.2648,lng:112.7513,
+   date:'2026-01-24',time:'16:00',jarak:'10K',level:'Intermediate',
+   pace:'6:00-7:00 /km',type:'Fun Run',wilayah:'Surabaya Pusat',
+   category:'Popular Communities',featured:false,tags:['Kalimas','Heritage','Sore','Monkasel'],custom:false},
+  {id:20,color:'#dc2626',icon:'JK',title:'Jelajah Kota Surabaya 10K',community:'Komunitas Pelari Surabaya (KPS)',
+   desc:'Event lari bertema wisata kota. Rute melewati 10 landmark ikonik Surabaya — Monkasel, Tugu Pahlawan, Jembatan Merah, dan lebih banyak lagi.',
+   location:'Monumen Tugu Pahlawan, Jl. Pahlawan, Surabaya Utara',lat:-7.2459,lng:112.7378,
+   date:'2026-04-05',time:'05:30',jarak:'10K',level:'Intermediate',
+   pace:'6:00-7:30 /km',type:'Event',wilayah:'Surabaya Utara',
+   category:'Running Events',featured:true,tags:['City Tour','Landmark','10K','KPS'],custom:false},
+  {id:21,color:'#84cc16',icon:'SP',title:'Senayan Style Morning Run SBY',community:'Running Indonesia Surabaya',
+   desc:'Chapter Surabaya dari Running Indonesia — komunitas 50.000+ anggota nasional. Lari pagi tiap Minggu di berbagai spot kota.',
+   location:'Taman Surya, Balai Kota, Surabaya Pusat',lat:-7.2548,lng:112.7382,
+   date:'2026-01-05',time:'05:30',jarak:'5K',level:'Beginner',
+   pace:'7:00-8:30 /km',type:'Latihan Rutin',wilayah:'Surabaya Pusat',
+   category:'Popular Communities',featured:false,tags:['Running Indonesia','Nasional','App','Pagi'],custom:false},
+  {id:22,color:'#f59e0b',icon:'PH',title:'Pahlawan Run 10K',community:'Surabaya Heritage Runners',
+   desc:'Event lari memperingati Hari Pahlawan 10 November. Rute melewati kawasan bersejarah perjuangan Surabaya. Pendaftaran online.',
+   location:'Tugu Pahlawan, Jl. Pahlawan, Surabaya Utara',lat:-7.2459,lng:112.7378,
+   date:'2026-11-10',time:'06:00',jarak:'10K',level:'Intermediate',
+   pace:'6:00-7:00 /km',type:'Event',wilayah:'Surabaya Utara',
+   category:'Running Events',featured:false,tags:['Pahlawan','10 November','Heritage','Nasionalisme'],custom:false}
 ];
 
 var ROUTES = [
-  {id:1,icon:'KN',name:'Kenjeran Coastal Loop',area:'Surabaya Timur',dist:'10K',level:'Intermediate',
-   start:'Pantai Kenjeran',end:'Jembatan Suroboyo',duration:'55-70 menit',
-   desc:'Rute tepi pantai dengan pemandangan Selat Madura. Trek relatif datar dengan angin laut yang segar.',
-   lat:-7.2277,lng:112.8064,color:'#3b82f6',
-   suitable:'Cocok untuk pelari intermediate yang ingin menikmati pemandangan laut.'},
-  {id:2,icon:'OT',name:'Old Town Heritage Trail',area:'Surabaya Utara',dist:'5K',level:'Beginner',
-   start:'Jembatan Merah',end:'Tugu Pahlawan',duration:'28-40 menit',
-   desc:'Rute wisata sejarah melewati kawasan kota lama Surabaya. Jalan datar dan lebar.',
-   lat:-7.2401,lng:112.7378,color:'#a855f7',
-   suitable:'Ramah untuk pelari pemula yang ingin menjelajahi sejarah kota.'},
-  {id:3,icon:'DG',name:'Darmo Green Corridor',area:'Surabaya Tengah',dist:'5K',level:'Beginner',
-   start:'Taman Mayangkara',end:'Taman Bungkul',duration:'28-38 menit',
-   desc:'Koridor hijau Jalan Darmo dengan pohon-pohon rindang. Jalur nyaman dan populer.',
+  /* Jl. Darmo: lurus ke selatan dari Taman Mayangkara → Taman Bungkul */
+  {id:2,icon:'DG',name:'Darmo Green Corridor',area:'Surabaya Tengah',dist:'5K',level:'Beginner',
+   start:'Taman Mayangkara (Jl. Darmo)',end:'Taman Bungkul (Jl. Raya Darmo)',duration:'28-38 menit',
+   desc:'Koridor hijau Jl. Darmo lurus dari Taman Mayangkara ke Taman Bungkul. Trotoar lebar, pohon rindang, sangat populer.',
    lat:-7.2908,lng:112.7340,color:'#84cc16',
-   suitable:'Sangat populer untuk pemula dan pelari rutin.'},
+   via:[[-7.2755,112.7368],[-7.2779,112.7366],[-7.2800,112.7364],[-7.2822,112.7362],[-7.2845,112.7360],[-7.2868,112.7358],[-7.2890,112.7355],[-7.2908,112.7352],[-7.2930,112.7350],[-7.2950,112.7348],[-7.2970,112.7362],[-7.2988,112.7372],[-7.2994,112.7378]],
+   suitable:'Sangat populer untuk pemula dan pelari rutin pagi hari.'},
+  /* Kota Lama: Jembatan Merah → Jl. Rajawali → Jl. Veteran → Tugu Pahlawan */
+  {id:3,icon:'OT',name:'Old Town Heritage Trail',area:'Surabaya Utara',dist:'5K',level:'Beginner',
+   start:'Jembatan Merah (Jl. Rajawali)',end:'Tugu Pahlawan (Jl. Pahlawan)',duration:'28-40 menit',
+   desc:'Rute wisata sejarah via Jl. Rajawali → Jl. Veteran → Jl. Pahlawan melewati kawasan kota lama. Jalan datar dan lebar.',
+   lat:-7.2401,lng:112.7378,color:'#a855f7',
+   via:[[-7.2401,112.7378],[-7.2410,112.7373],[-7.2420,112.7368],[-7.2430,112.7363],[-7.2440,112.7358],[-7.2450,112.7355],[-7.2458,112.7358],[-7.2465,112.7365],[-7.2470,112.7372],[-7.2475,112.7380],[-7.2480,112.7385],[-7.2484,112.7390],[-7.2488,112.7392],[-7.2490,112.7395]],
+   suitable:'Ramah untuk pelari pemula yang ingin menjelajahi sejarah kota.'},
+  /* Citraland: loop perumahan searah jarum jam */
   {id:4,icon:'CL',name:'Citraland Residential Loop',area:'Surabaya Barat',dist:'5K',level:'Beginner',
-   start:'CitraLand Commercial',end:'CitraLand Park',duration:'30-42 menit',
-   desc:'Rute di dalam kawasan perumahan Citraland. Jalan bersih dan minim kendaraan berat.',
+   start:'CitraLand Commercial Area (Jl. Citraland)',end:'CitraLand Commercial Area',duration:'30-42 menit',
+   desc:'Loop searah jarum jam di dalam kawasan perumahan Citraland. Jalan bersih, minim kendaraan, cocok keluarga.',
    lat:-7.2885,lng:112.6639,color:'#f97316',
-   suitable:'Cocok untuk pelari pemula dan lari keluarga.'},
+   via:[[-7.2885,112.6639],[-7.2870,112.6648],[-7.2855,112.6660],[-7.2840,112.6672],[-7.2828,112.6686],[-7.2818,112.6702],[-7.2812,112.6718],[-7.2814,112.6735],[-7.2822,112.6750],[-7.2835,112.6762],[-7.2850,112.6770],[-7.2865,112.6775],[-7.2878,112.6770],[-7.2888,112.6760],[-7.2895,112.6748],[-7.2898,112.6732],[-7.2898,112.6716],[-7.2894,112.6700],[-7.2890,112.6683],[-7.2886,112.6660],[-7.2885,112.6639]],
+   suitable:'Cocok untuk pelari pemula dan lari keluarga di pagi hari.'},
+  /* Bungkul: putaran di dalam dan sekitar taman */
   {id:5,icon:'BP',name:'Bungkul Park Circuit',area:'Surabaya Selatan',dist:'3K',level:'Beginner',
-   start:'Taman Bungkul',end:'Taman Bungkul',duration:'15-22 menit',
-   desc:'Sirkuit populer mengelilingi Taman Bungkul. Trek pendek untuk pemanasan atau pendinginan.',
+   start:'Taman Bungkul - Pintu Utama (Jl. Raya Darmo)',end:'Taman Bungkul - Pintu Utama',duration:'15-22 menit',
+   desc:'Sirkuit mengelilingi Taman Bungkul via Jl. Progo → Jl. Barata Jaya → kembali Jl. Darmo. Trek pendek dan aman.',
    lat:-7.2994,lng:112.7378,color:'#ec4899',
-   suitable:'Ideal untuk pemula pertama kali atau lari sore santai.'},
+   via:[[-7.2994,112.7378],[-7.2994,112.7388],[-7.2994,112.7400],[-7.2990,112.7412],[-7.2985,112.7420],[-7.2980,112.7428],[-7.2978,112.7418],[-7.2985,112.7408],[-7.2990,112.7395],[-7.2994,112.7378]],
+   suitable:'Ideal untuk pemula pertama kali atau lari sore santai. Jalur taman.'},
+  /* Kalimas: Monkasel → Jl. Pemuda → Jl. Veteran → Jembatan Merah */
   {id:6,icon:'KR',name:'Kalimas Riverside Run',area:'Surabaya Utara',dist:'10K',level:'Intermediate',
-   start:'Monumen Kapal Selam',end:'Jembatan Merah',duration:'55-75 menit',
-   desc:'Rute di sepanjang tepi Sungai Kalimas dengan pemandangan sungai bersejarah.',
-   lat:-7.2459,lng:112.7378,color:'#06b6d4',
+   start:'Monumen Kapal Selam (Jl. Pemuda)',end:'Jembatan Merah (Jl. Rajawali)',duration:'55-75 menit',
+   desc:'Rute menyusuri Jl. Pemuda → Jl. Veteran → Jl. Pahlawan → Jl. Rajawali. Melewati ikon bersejarah Surabaya.',
+   lat:-7.2645,lng:112.7392,color:'#06b6d4',
+   via:[[-7.2648,112.7514],[-7.2638,112.7505],[-7.2628,112.7495],[-7.2618,112.7483],[-7.2606,112.7472],[-7.2595,112.7460],[-7.2583,112.7448],[-7.2572,112.7436],[-7.2562,112.7422],[-7.2552,112.7408],[-7.2542,112.7395],[-7.2532,112.7382],[-7.2520,112.7380],[-7.2508,112.7378],[-7.2495,112.7376],[-7.2480,112.7375],[-7.2465,112.7375],[-7.2450,112.7375],[-7.2435,112.7376],[-7.2420,112.7377],[-7.2410,112.7378],[-7.2401,112.7378]],
    suitable:'Cocok untuk pelari intermediate yang menyukai jalur bersejarah.'},
+  /* ITS: Jl. Raya ITS → Jl. Arif Rahman Hakim → Jl. Mulyorejo */
   {id:7,icon:'MR',name:'Mulyorejo Morning Route',area:'Surabaya Timur',dist:'5K',level:'Beginner',
-   start:'Kampus ITS',end:'Mulyorejo Raya',duration:'28-38 menit',
-   desc:'Rute pagi di kawasan Mulyorejo dengan jalanan yang relatif sepi.',
+   start:'Gerbang ITS Jl. Raya ITS',end:'Jl. Mulyorejo Raya',duration:'28-38 menit',
+   desc:'Rute pagi via Jl. Raya ITS → Jl. Arief Rahman Hakim → Jl. Mulyorejo. Kawasan kampus yang sejuk dan sepi.',
    lat:-7.2777,lng:112.7960,color:'#f59e0b',
-   suitable:'Baik untuk pemula yang menginginkan rute tenang.'},
+   via:[[-7.2820,112.7962],[-7.2808,112.7962],[-7.2795,112.7960],[-7.2782,112.7958],[-7.2770,112.7958],[-7.2758,112.7960],[-7.2748,112.7963],[-7.2738,112.7968],[-7.2728,112.7975],[-7.2718,112.7982],[-7.2708,112.7988],[-7.2698,112.7992],[-7.2688,112.7995]],
+   suitable:'Baik untuk pemula yang menginginkan rute kampus yang tenang.'},
+  /* GBT: loop di luar stadion via Jl. Sememi & Jl. Kandangan */
   {id:8,icon:'GS',name:'GBT Stadium Sprint Loop',area:'Surabaya Barat',dist:'10K',level:'Advanced',
-   start:'Gelora Bung Tomo',end:'Gelora Bung Tomo',duration:'45-55 menit',
-   desc:'Rute melingkar di sekitar Stadion GBT untuk latihan kecepatan dan interval.',
+   start:'Stadion Gelora Bung Tomo - Pintu Timur',end:'Stadion Gelora Bung Tomo - Pintu Timur',duration:'45-55 menit',
+   desc:'Loop searah jarum jam mengelilingi Stadion GBT via Jl. Sememi → Jl. Kandangan. Jalur lebar ideal sprint training.',
    lat:-7.3100,lng:112.6500,color:'#ef4444',
+   via:[[-7.3098,112.6512],[-7.3085,112.6510],[-7.3072,112.6508],[-7.3060,112.6510],[-7.3048,112.6515],[-7.3038,112.6522],[-7.3030,112.6532],[-7.3024,112.6545],[-7.3022,112.6558],[-7.3022,112.6572],[-7.3025,112.6585],[-7.3030,112.6596],[-7.3038,112.6605],[-7.3048,112.6612],[-7.3060,112.6615],[-7.3072,112.6615],[-7.3084,112.6612],[-7.3094,112.6606],[-7.3102,112.6597],[-7.3107,112.6586],[-7.3109,112.6573],[-7.3107,112.6560],[-7.3103,112.6547],[-7.3098,112.6535],[-7.3098,112.6512]],
    suitable:'Direkomendasikan untuk pelari advanced yang ingin latihan intensitas tinggi.'},
+  /* Wonokromo: Zoo → Jl. Raya Wonokromo → Jl. Ahmad Yani → balik via Jl. Margorejo */
   {id:9,icon:'WL',name:'Wonokromo Long Distance',area:'Surabaya Selatan',dist:'15K',level:'Advanced',
-   start:'Kebun Binatang SBY',end:'Wonokromo Terminal',duration:'80-105 menit',
-   desc:'Rute jarak jauh untuk pelari berpengalaman melewati beberapa kawasan padat.',
+   start:'Kebun Binatang Surabaya (Jl. Setail)',end:'Terminal Wonokromo',duration:'80-105 menit',
+   desc:'Jl. Setail → Jl. Raya Wonokromo → Jl. Ahmad Yani ke selatan → Jl. Margorejo balik utara → Terminal Wonokromo.',
    lat:-7.3027,lng:112.7362,color:'#6366f1',
+   via:[[-7.3027,112.7362],[-7.3042,112.7352],[-7.3058,112.7345],[-7.3072,112.7338],[-7.3085,112.7330],[-7.3100,112.7322],[-7.3115,112.7318],[-7.3130,112.7315],[-7.3148,112.7318],[-7.3162,112.7322],[-7.3175,112.7328],[-7.3188,112.7338],[-7.3198,112.7350],[-7.3205,112.7362],[-7.3208,112.7378],[-7.3205,112.7392],[-7.3200,112.7405],[-7.3192,112.7418],[-7.3182,112.7428],[-7.3170,112.7435],[-7.3158,112.7440],[-7.3145,112.7442],[-7.3132,112.7440],[-7.3120,112.7435],[-7.3110,112.7428]],
    suitable:'Khusus pelari advanced. Disarankan bawa minum sendiri.'},
+  /* Gubeng: Stasiun Gubeng → Jl. Pemuda → Jl. Sudirman → Jl. Urip → balik Gubeng */
   {id:10,icon:'GN',name:'Gubeng Night Circuit',area:'Surabaya Tengah',dist:'10K',level:'Intermediate',
-   start:'Stasiun Gubeng',end:'Jl. Pemuda',duration:'55-70 menit',
-   desc:'Rute malam hari di pusat kota dengan pencahayaan jalan yang baik.',
-   lat:-7.2730,lng:112.7417,color:'#8b5cf6',
-   suitable:'Cocok untuk lari malam pelari intermediate. Pakai pakaian terang.'},
-  {id:11,icon:'SR',name:'Sukolilo Reservoir Loop',area:'Surabaya Timur',dist:'5K',level:'Beginner',
-   start:'Kampus ITS Sukolilo',end:'Jl. Kertajaya',duration:'28-36 menit',
-   desc:'Rute melingkar di kawasan Sukolilo dengan jalan lingkar kampus yang nyaman dan sepi.',
+   start:'Stasiun Gubeng (Jl. Sumatra)',end:'Stasiun Gubeng (loop)',duration:'55-70 menit',
+   desc:'Loop Gubeng via Jl. Sumatra → Jl. Pemuda → Jl. Panglima Sudirman → Jl. Urip Sumoharjo → balik Gubeng.',
+   lat:-7.2650,lng:112.7510,color:'#8b5cf6',
+   via:[[-7.2651,112.7512],[-7.2642,112.7500],[-7.2635,112.7488],[-7.2628,112.7475],[-7.2622,112.7462],[-7.2618,112.7448],[-7.2616,112.7435],[-7.2615,112.7420],[-7.2616,112.7406],[-7.2618,112.7392],[-7.2622,112.7380],[-7.2628,112.7368],[-7.2635,112.7358],[-7.2645,112.7350],[-7.2655,112.7345],[-7.2665,112.7345],[-7.2675,112.7348],[-7.2685,112.7355],[-7.2693,112.7365],[-7.2698,112.7378],[-7.2700,112.7392],[-7.2698,112.7406],[-7.2694,112.7420],[-7.2688,112.7432],[-7.2680,112.7443],[-7.2672,112.7452],[-7.2662,112.7460],[-7.2651,112.7465],[-7.2651,112.7512]],
+   suitable:'Cocok untuk lari malam pelari intermediate. Pakai pakaian terang dan reflektif.'},
+  /* ITS Campus Loop: dalam kampus ITS Sukolilo */
+  {id:11,icon:'SR',name:'Sukolilo ITS Campus Loop',area:'Surabaya Timur',dist:'5K',level:'Beginner',
+   start:'Gerbang ITS Jl. Raya ITS',end:'Gerbang ITS (loop)',duration:'28-36 menit',
+   desc:'Loop di dalam kampus ITS via jalan utama kampus. Rute teduh, sepi kendaraan, sangat cocok pagi hari.',
    lat:-7.2860,lng:112.7960,color:'#14b8a6',
-   suitable:'Baik untuk mahasiswa dan pelari pemula di area Sukolilo-Keputih.'},
+   via:[[-7.2820,112.7962],[-7.2832,112.7968],[-7.2842,112.7975],[-7.2850,112.7984],[-7.2855,112.7995],[-7.2858,112.8008],[-7.2858,112.8020],[-7.2855,112.8032],[-7.2850,112.8042],[-7.2843,112.8050],[-7.2835,112.8056],[-7.2825,112.8058],[-7.2815,112.8056],[-7.2806,112.8050],[-7.2800,112.8042],[-7.2795,112.8030],[-7.2793,112.8018],[-7.2793,112.8005],[-7.2795,112.7992],[-7.2800,112.7980],[-7.2807,112.7970],[-7.2820,112.7962]],
+   suitable:'Baik untuk mahasiswa dan pelari pemula di area ITS-Sukolilo.'},
+  /* Tunjungan: Tunjungan Plaza → Jl. Basuki Rahmat → Jl. Yos Sudarso → Jl. Pemuda → Balai Kota */
   {id:12,icon:'TJ',name:'Tunjungan City Walk',area:'Surabaya Tengah',dist:'3K',level:'Beginner',
-   start:'Tunjungan Plaza',end:'Balai Kota Surabaya',duration:'15-20 menit',
-   desc:'Rute pendek di jantung kota melewati kawasan Tunjungan bersejarah.',
+   start:'Tunjungan Plaza 1 (Jl. Basuki Rahmat)',end:'Balai Kota Surabaya (Jl. Jimerto)',duration:'15-20 menit',
+   desc:'Jl. Basuki Rahmat lurus ke utara → Jl. Yos Sudarso → Jl. Pemuda → Jl. Jimerto - Balai Kota. Pusat kota bersejarah.',
    lat:-7.2574,lng:112.7399,color:'#f43f5e',
-   suitable:'Cocok untuk lari santai sore dan pelari pemula kota.'},
+   via:[[-7.2605,112.7399],[-7.2592,112.7398],[-7.2578,112.7396],[-7.2565,112.7394],[-7.2552,112.7392],[-7.2540,112.7392],[-7.2528,112.7395],[-7.2518,112.7400],[-7.2510,112.7408],[-7.2504,112.7418],[-7.2500,112.7430],[-7.2548,112.7382]],
+   suitable:'Cocok untuk lari santai sore dan pelari pemula pusat kota.'},
+  /* Bratang–Kendangsari: loop perumahan timur */
   {id:13,icon:'BK',name:'Bratang - Kendangsari Loop',area:'Surabaya Timur',dist:'10K',level:'Intermediate',
-   start:'Jl. Bratang',end:'Jl. Kendangsari',duration:'52-65 menit',
-   desc:'Rute melewati kawasan perumahan Bratang dan Kendangsari. Trek bervariasi ringan.',
+   start:'Jl. Bratang Binangun',end:'Jl. Bratang Binangun (loop)',duration:'52-65 menit',
+   desc:'Loop via Jl. Bratang Binangun → Jl. Nginden Semolo → Jl. Kendangsari → Jl. Semolowaru → balik. Perumahan timur.',
    lat:-7.3100,lng:112.7820,color:'#0ea5e9',
-   suitable:'Cocok untuk pelari intermediate yang ingin rute perumahan dengan variasi.'},
+   via:[[-7.3028,112.7752],[-7.3038,112.7762],[-7.3048,112.7772],[-7.3058,112.7782],[-7.3068,112.7792],[-7.3078,112.7802],[-7.3086,112.7812],[-7.3092,112.7824],[-7.3095,112.7838],[-7.3095,112.7852],[-7.3092,112.7865],[-7.3086,112.7876],[-7.3078,112.7884],[-7.3068,112.7890],[-7.3058,112.7892],[-7.3048,112.7892],[-7.3038,112.7888],[-7.3030,112.7882],[-7.3022,112.7873],[-7.3016,112.7862],[-7.3012,112.7850],[-7.3010,112.7836],[-7.3012,112.7822],[-7.3016,112.7810],[-7.3022,112.7798],[-7.3028,112.7786],[-7.3028,112.7752]],
+   suitable:'Cocok untuk pelari intermediate di area timur Surabaya.'},
+  /* Pakal West: Terminal Pakal → Jl. Raya Benowo → Jl. Raya Menganti */
   {id:14,icon:'PW',name:'Pakal West Endurance',area:'Surabaya Barat',dist:'15K',level:'Advanced',
-   start:'Terminal Pakal',end:'Jl. Raya Menganti',duration:'80-100 menit',
-   desc:'Rute jarak jauh di wilayah barat Surabaya dengan medan yang lebih bervariasi.',
+   start:'Terminal Pakal (Jl. Raya Pakal)',end:'Jl. Raya Menganti',duration:'80-100 menit',
+   desc:'Jl. Raya Pakal ke barat → Jl. Raya Benowo → Jl. Raya Menganti. Medan bervariasi di wilayah berkembang Surabaya Barat.',
    lat:-7.2985,lng:112.6420,color:'#dc2626',
+   via:[[-7.2985,112.6420],[-7.2978,112.6435],[-7.2970,112.6450],[-7.2960,112.6465],[-7.2950,112.6480],[-7.2940,112.6495],[-7.2930,112.6510],[-7.2920,112.6525],[-7.2912,112.6540],[-7.2905,112.6555],[-7.2900,112.6572],[-7.2896,112.6588],[-7.2894,112.6605],[-7.2892,112.6622],[-7.2892,112.6638],[-7.2894,112.6655],[-7.2898,112.6672],[-7.2905,112.6688],[-7.2914,112.6703],[-7.2924,112.6715],[-7.2936,112.6725],[-7.2950,112.6732],[-7.2964,112.6736],[-7.2978,112.6738]],
    suitable:'Khusus pelari advanced. Rute di wilayah berkembang Surabaya Barat.'},
+  /* Tambak Madu: Jl. Tambak Madu → Jl. Dupak ke arah Tanjung Perak */
   {id:15,icon:'TM',name:'Tambak Madu Riverside',area:'Surabaya Utara',dist:'5K',level:'Beginner',
-   start:'Jl. Tambak Madu',end:'Pelabuhan Tanjung Perak (arah)',duration:'28-38 menit',
-   desc:'Rute di area Surabaya Utara melewati jalan-jalan lingkungan yang relatif sepi di pagi hari.',
+   start:'Jl. Tambak Madu Raya',end:'Jl. Dupak (arah Tanjung Perak)',duration:'28-38 menit',
+   desc:'Jl. Tambak Madu → Jl. Dupak Rukun → Jl. Dupak arah pelabuhan. Jalur lingkungan sepi di pagi hari.',
    lat:-7.2192,lng:112.7290,color:'#7c3aed',
+   via:[[-7.2192,112.7290],[-7.2198,112.7305],[-7.2205,112.7320],[-7.2212,112.7335],[-7.2220,112.7348],[-7.2228,112.7360],[-7.2236,112.7372],[-7.2244,112.7382],[-7.2250,112.7392],[-7.2255,112.7402],[-7.2258,112.7412]],
    suitable:'Cocok untuk pelari pemula di wilayah Surabaya Utara.'},
+  /* Jambangan–Menanggal: Jl. Kebonsari → Jl. Ahmad Yani → Jl. Menanggal */
   {id:16,icon:'JM',name:'Jambangan - Menanggal Route',area:'Surabaya Selatan',dist:'10K',level:'Intermediate',
-   start:'Taman Jambangan',end:'Jl. Menanggal',duration:'52-68 menit',
-   desc:'Rute di wilayah selatan Surabaya melewati kawasan hijau Jambangan.',
+   start:'Taman Jambangan (Jl. Kebonsari)',end:'Jl. Raya Menanggal',duration:'52-68 menit',
+   desc:'Jl. Kebonsari → Jl. Jambangan Raya → Jl. Ahmad Yani ke utara → Jl. Menanggal. Suasana hijau dan tenang.',
    lat:-7.3450,lng:112.7250,color:'#059669',
-   suitable:'Baik untuk pelari intermediate yang suka suasana tenang di luar pusat kota.'}
+   via:[[-7.3450,112.7250],[-7.3438,112.7258],[-7.3425,112.7265],[-7.3412,112.7272],[-7.3400,112.7278],[-7.3388,112.7284],[-7.3375,112.7290],[-7.3362,112.7296],[-7.3348,112.7302],[-7.3335,112.7308],[-7.3322,112.7314],[-7.3308,112.7320],[-7.3295,112.7325],[-7.3282,112.7330],[-7.3268,112.7334],[-7.3255,112.7338],[-7.3242,112.7340]],
+   suitable:'Baik untuk pelari intermediate yang suka suasana tenang di selatan kota.'}
+];
+
+var COMMUNITIES = [
+  {id:1,icon:'KP',name:'Komunitas Pelari Surabaya (KPS)',area:'Surabaya Pusat',color:'#3b82f6',
+   members:'850+',schedule:'Setiap Minggu, 05:30 WIB',location:'Taman Mayangkara, Jl. Darmo',level:'Semua Level',
+   founded:'2015',instagram:'@kps_surabaya',
+   desc:'Komunitas lari tertua dan terbesar di Surabaya. KPS rutin menggelar lari pagi setiap Minggu di Jl. Darmo dan menyelenggarakan event lari tahunan bertaraf nasional.',
+   tags:['Aktif','Rutin','All Level','Event Nasional']},
+  {id:2,icon:'SR',name:'Surabaya Runners Community',area:'Surabaya Selatan',color:'#84cc16',
+   members:'1200+',schedule:'Setiap Minggu, 06:00 WIB',location:'Taman Bungkul, Jl. Raya Darmo',level:'Semua Level',
+   founded:'2017',instagram:'@surabayarunners',
+   desc:'Komunitas lari populer di Surabaya Selatan yang berpusat di Taman Bungkul. Aktif menggelar fun run bulanan dan sering berkolaborasi dengan komunitas lari dari kota lain.',
+   tags:['Populer','Taman Bungkul','Fun Run','Kolaborasi']},
+  {id:3,icon:'ER',name:'East Runners Surabaya',area:'Surabaya Timur',color:'#f59e0b',
+   members:'420+',schedule:'Sabtu & Minggu, 05:00 WIB',location:'Kampus ITS, Jl. Raya ITS Sukolilo',level:'Intermediate',
+   founded:'2019',instagram:'@eastrunnersby',
+   desc:'Komunitas pelari aktif di wilayah Surabaya Timur. Berbasis di area kampus ITS, banyak diikuti oleh mahasiswa dan dosen. Memiliki program pelatihan lari jarak menengah.',
+   tags:['ITS','Mahasiswa','Timur','Training']},
+  {id:4,icon:'SC',name:'Surabaya Speed Club',area:'Surabaya Timur',color:'#ef4444',
+   members:'180+',schedule:'Rabu & Sabtu, 05:00 WIB',location:'Pantai Ria Kenjeran, Jl. Sukolilo Lor',level:'Advanced',
+   founded:'2018',instagram:'@sbyspeedclub',
+   desc:'Komunitas pelari cepat yang fokus pada latihan interval, track, dan persiapan kompetisi. Anggota aktif dari berbagai cabang olahraga atletik Surabaya.',
+   tags:['Speed','Interval','Kompetisi','Advanced']},
+  {id:5,icon:'WR',name:'West Runners Citraland',area:'Surabaya Barat',color:'#8b5cf6',
+   members:'340+',schedule:'Setiap Minggu, 05:00 WIB',location:'CitraLand Boulevard, Surabaya Barat',level:'Beginner',
+   founded:'2020',instagram:'@westrunnerscitra',
+   desc:'Komunitas lari keluarga di kawasan perumahan CitraLand. Rute aman dan nyaman, sangat cocok untuk pasangan dan orang tua yang ingin berolahraga bersama anak.',
+   tags:['Keluarga','Pemula','Citraland','Aman']},
+  {id:6,icon:'NS',name:'Night Runners SBY',area:'Surabaya Pusat',color:'#06b6d4',
+   members:'290+',schedule:'Rabu, 19:00 WIB',location:'Tunjungan Plaza, Jl. Basuki Rahmat',level:'Intermediate',
+   founded:'2019',instagram:'@nightrunnersby',
+   desc:'Komunitas lari malam unik di Surabaya. Rutin lari setiap Rabu malam menyusuri pusat kota yang diterangi gemerlap lampu. Cocok untuk pekerja yang tidak sempat lari pagi.',
+   tags:['Malam','Kota','Pekerja','Unik']},
+  {id:7,icon:'HR',name:'Surabaya Heritage Runners',area:'Surabaya Utara',color:'#f97316',
+   members:'215+',schedule:'Minggu ke-3 setiap bulan, 06:00 WIB',location:'Jembatan Merah, Jl. Rajawali',level:'Beginner',
+   founded:'2021',instagram:'@heritagerunsby',
+   desc:'Komunitas lari bertema wisata sejarah. Setiap run melewati bangunan bersejarah Surabaya ditemani pemandu wisata. Cocok untuk pecinta sejarah kota.',
+   tags:['Heritage','Sejarah','Wisata','Edukasi']},
+  {id:8,icon:'GS',name:'Surabaya Athletics Club',area:'Surabaya Barat',color:'#dc2626',
+   members:'130+',schedule:'Setiap Sabtu, 05:00 WIB',location:'Stadion Gelora Bung Tomo',level:'Advanced',
+   founded:'2016',instagram:'@sbyathletics',
+   desc:'Komunitas atletik serius berbasis di Stadion GBT. Anggota adalah atlet dan pelari kompetitif yang aktif mengikuti perlombaan tingkat regional hingga nasional.',
+   tags:['Atletik','GBT','Kompetisi','Nasional']},
+  {id:9,icon:'PK',name:'Parkrun Surabaya',area:'Surabaya Selatan',color:'#ec4899',
+   members:'500+',schedule:'Setiap Sabtu, 07:30 WIB',location:'Taman Bungkul, Jl. Raya Darmo',level:'Semua Level',
+   founded:'2019',instagram:'@parkrunsurabaya',
+   desc:'Cabang Parkrun resmi di Surabaya — bagian dari gerakan Parkrun global yang hadir di 23 negara. Event 5K gratis, terukur, dan terdokumentasi setiap Sabtu pagi.',
+   tags:['Gratis','Global','5K','Sabtu']},
+  {id:10,icon:'RI',name:'Running Indonesia Surabaya',area:'Surabaya Pusat',color:'#7c3aed',
+   members:'2000+',schedule:'Fleksibel (berbasis aplikasi)',location:'Berbagai titik di Surabaya',level:'Semua Level',
+   founded:'2014',instagram:'@runningindonesia',
+   desc:'Chapter Surabaya dari komunitas Running Indonesia — komunitas lari terbesar di Indonesia dengan 50.000+ anggota aktif secara nasional. Memiliki chapter di seluruh Indonesia.',
+   tags:['Nasional','Terbesar','App','All Level']},
+  {id:11,icon:'RB',name:'Rungkut Runners',area:'Surabaya Timur',color:'#14b8a6',
+   members:'280+',schedule:'Setiap Minggu, 06:00 WIB',location:'Perumahan Rungkut Mapan, Surabaya Timur',level:'Beginner',
+   founded:'2020',instagram:'@rungkutrunners',
+   desc:'Komunitas lari lokal yang hangat dan kekeluargaan di wilayah Rungkut. Sangat ramah pemula, banyak ibu-ibu dan bapak-bapak warga Rungkut yang aktif bergabung.',
+   tags:['Lokal','Kekeluargaan','Rungkut','Pemula']},
+  {id:12,icon:'HA',name:'Hash House Harriers Surabaya (H3)',area:'Surabaya Pusat',color:'#0ea5e9',
+   members:'300+',schedule:'Setiap Senin, 17:30 WIB',location:'Berbagai lokasi (bergilir)',level:'Semua Level',
+   founded:'1988',instagram:'@h3surabaya',
+   desc:'Chapter H3 Surabaya — bagian dari Hash House Harriers, komunitas lari-minum global yang hadir di 190+ negara. Konsep "non-competitive running" dengan rute berubah setiap minggu.',
+   tags:['Global','H3','Non-Kompetitif','Internasional']}
 ];
 
 var currentCat = 'all', currentArea = 'all', currentFormTab = 'event';
 var rsvpSet = {}, nextId = 100;
-var mapInstance = null, routesMapInstance = null;
-var leafMarkers = {}, routePolylines = [], selectedRouteId = null, currentModalId = null;
+var routesMapInstance = null;
+var routePolylines = [], selectedRouteId = null, currentModalId = null;
 
 /* NAV */
 function navigate(page) {
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  ['home','map','routes','about'].forEach(function(p){
+  ['home','routes','community','about'].forEach(function(p){
     var ne=document.getElementById('nav-'+p), me=document.getElementById('mnav-'+p);
     if(ne) ne.classList.remove('active');
     if(me) me.classList.remove('active');
@@ -985,11 +1199,10 @@ function navigate(page) {
   var ne=document.getElementById('nav-'+page), me=document.getElementById('mnav-'+page);
   if(ne) ne.classList.add('active');
   if(me) me.classList.add('active');
-  document.getElementById('mainFooter').style.display = (page==='map') ? 'none' : '';
   document.getElementById('addFab').style.display = (page==='home') ? '' : 'none';
   window.scrollTo({top:0,behavior:'smooth'});
-  if(page==='map')    setTimeout(initMap,     150);
-  if(page==='routes') setTimeout(initRoutesMap,150);
+  if(page==='routes')    setTimeout(initRoutesMap,  150);
+  if(page==='community') setTimeout(renderCommunities, 50);
 }
 function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open');}
 function scrollToCards(){document.getElementById('cardsSection').scrollIntoView({behavior:'smooth'});}
@@ -1056,7 +1269,6 @@ function renderCards(){
       +'<div class="card-tags">'+a.tags.map(function(t){return '<span class="card-tag">'+esc(t)+'</span>';}).join('')+'</div>'
       +'<div class="card-actions">'
       +'<button class="btn-view" onclick="event.stopPropagation();openModal('+a.id+')">View Details</button>'
-      +'<button class="btn-map" onclick="event.stopPropagation();goToMap('+a.id+')" title="Lihat di Peta"><svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--blue3);fill:none;stroke-width:2;display:inline-block;vertical-align:middle"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></button>'
       +'<button class="btn-join'+(rsvp?' rsvp-done':'')+'" onclick="event.stopPropagation();doRSVP('+a.id+')">'+(rsvp?'&#10003; Terdaftar':'Join / RSVP')+'</button>'
       +'</div></div></div>';
   }).join('');
@@ -1088,10 +1300,6 @@ function clearFilters(){
   document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
   document.querySelector('.cat-tab[data-cat="all"]').classList.add('active');
   renderCards();
-}
-function goToMap(id){
-  navigate('map');
-  setTimeout(function(){hlMapLoc(id);},500);
 }
 function doRSVP(id){
   if(rsvpSet[id]){delete rsvpSet[id];showToast('RSVP dibatalkan','info');}
@@ -1136,7 +1344,6 @@ function closeModal(e){
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
-function openMapFromModal(){closeModal(null);navigate('map');if(currentModalId!==null)setTimeout(function(){hlMapLoc(currentModalId);},500);}
 function rsvpFromModal(){
   if(currentModalId===null)return;
   doRSVP(currentModalId);
@@ -1214,58 +1421,6 @@ function submitCommunity(){
   ['fc_name','fc_schedule','fc_location','fc_contact','fc_desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
 }
 
-/* MAP */
-function initMap(){
-  var el=document.getElementById('map');if(!el)return;
-  if(mapInstance){setTimeout(function(){mapInstance.invalidateSize();},100);renderMapLocs();return;}
-  mapInstance=L.map('map',{zoomControl:true}).setView([-7.2756,112.7378],12);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
-    attribution:'&copy; <a href="https://www.esri.com">Esri</a> &copy; OSM Contributors',
-    maxZoom:19
-  }).addTo(mapInstance);
-  ACTIVITIES.forEach(function(a){addMapMarker(a);});
-  renderMapLocs();
-}
-function addMapMarker(a){
-  if(!mapInstance)return;
-  var ih='<div style="background:'+a.color+';border:2px solid #fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.5)">'+a.icon+'</div>';
-  var icon=L.divIcon({html:ih,className:'',iconAnchor:[17,17]});
-  var popup='<div class="map-popup-box">'
-    +'<div class="map-popup-name">'+esc(a.title)+'</div>'
-    +'<div class="map-popup-addr">'+esc(a.location)+'</div>'
-    +'<div class="map-popup-comm">'+esc(a.community)+' &middot; '+a.jarak+' &middot; '+a.level+'</div>'
-    +'<button class="map-popup-btn" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination='+a.lat+','+a.lng+'\',\'_blank\')">Get Directions</button>'
-    +'<button class="map-popup-btn2" onclick="openModal('+a.id+')">Details</button>'
-    +'</div>';
-  leafMarkers[a.id]=L.marker([a.lat,a.lng],{icon:icon}).addTo(mapInstance).bindPopup(popup,{maxWidth:260});
-}
-function renderMapLocs(){
-  var q=(document.getElementById('mapSearchInput').value||'').toLowerCase();
-  var list=ACTIVITIES.filter(function(a){return !q||a.title.toLowerCase().indexOf(q)>=0||a.location.toLowerCase().indexOf(q)>=0;});
-  var cnt=document.getElementById('mapLocCount');
-  if(cnt) cnt.textContent=list.length;
-  document.getElementById('mapLocationsList').innerHTML=list.map(function(a){
-    return '<div class="map-loc-item" id="mloc-'+a.id+'" onclick="hlMapLoc('+a.id+')">'
-      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">'
-      +'<div style="width:28px;height:28px;border-radius:7px;background:'+a.color+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">'+a.icon+'</div>'
-      +'<div class="map-loc-name">'+esc(a.title)+'</div></div>'
-      +'<div class="map-loc-addr">'+esc(a.location)+'</div>'
-      +'<div class="map-loc-tags"><span class="map-loc-tag">'+a.level+'</span><span class="map-loc-tag">'+a.type+'</span></div>'
-      +'</div>';
-  }).join('');
-}
-function filterMapLocations(){renderMapLocs();}
-function hlMapLoc(id){
-  document.querySelectorAll('.map-loc-item').forEach(function(el){el.classList.remove('selected');});
-  var el=document.getElementById('mloc-'+id);
-  if(el){el.classList.add('selected');el.scrollIntoView({behavior:'smooth',block:'nearest'});}
-  var a=ACTIVITIES.filter(function(x){return x.id===id;})[0];
-  if(a&&mapInstance){
-    mapInstance.flyTo([a.lat,a.lng],15,{duration:1});
-    if(leafMarkers[id])leafMarkers[id].openPopup();
-  }
-}
-
 /* ROUTES */
 function initRoutesMap(){
   var el=document.getElementById('routesMap');if(!el)return;
@@ -1320,17 +1475,7 @@ function selectRoute(id){
   selectedRouteId=id;
   var r=ROUTES.filter(function(x){return x.id===id;})[0];if(!r)return;
   renderRoutes();
-  if(routesMapInstance){
-    routesMapInstance.flyTo([r.lat,r.lng],14,{duration:1});
-    routePolylines.forEach(function(p){p.remove();});routePolylines.length=0;
-    var pts=genPts(r.lat,r.lng,parseInt(r.dist)||5);
-    routePolylines.push(L.polyline(pts,{color:r.color,weight:4,opacity:0.9,dashArray:'8,4'}).addTo(routesMapInstance));
-    var si=L.divIcon({html:'<div style="background:'+r.color+';color:#fff;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.4)">START: '+r.start.substring(0,15)+'</div>',className:'',iconAnchor:[0,10]});
-    routePolylines.push(L.marker([r.lat,r.lng],{icon:si}).addTo(routesMapInstance));
-    var endPt=pts[Math.round(pts.length/2)];
-    var ei=L.divIcon({html:'<div style="background:#ef4444;color:#fff;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.4)">END: '+r.end.substring(0,15)+'</div>',className:'',iconAnchor:[0,10]});
-    routePolylines.push(L.marker(endPt,{icon:ei}).addTo(routesMapInstance));
-  }
+  /* update info panel immediately */
   document.getElementById('routesMapInfo').innerHTML=
     '<div class="ri-row"><span>Rute</span><span class="ri-val">'+esc(r.name)+'</span></div>'
     +'<div class="ri-row"><span>Wilayah</span><span class="ri-val">'+esc(r.area)+'</span></div>'
@@ -1339,16 +1484,33 @@ function selectRoute(id){
     +'<div class="ri-row"><span>Level</span><span class="ri-val">'+r.level+'</span></div>'
     +'<div class="ri-row"><span>Mulai</span><span class="ri-val" style="font-size:11px">'+esc(r.start)+'</span></div>'
     +'<div class="ri-row"><span>Akhir</span><span class="ri-val" style="font-size:11px">'+esc(r.end)+'</span></div>'
-    +'<div style="margin-top:8px;font-size:11px;color:var(--gray400)">'+esc(r.suitable)+'</div>'
-    +'<div style="margin-top:5px;font-size:10px;color:var(--gray600)">Data Demo - Jalur bersifat ilustrasi</div>';
-}
-function genPts(lat,lng,km){
-  var deg=km*0.004,pts=[];
-  for(var i=0;i<=24;i++){
-    var t=i/24*Math.PI*2;
-    pts.push([lat+deg*0.6*Math.sin(t)+deg*0.08*Math.sin(t*3),lng+deg*0.4*Math.cos(t)+deg*0.05*Math.cos(t*2)]);
-  }
-  return pts;
+    +'<div style="margin-top:8px;font-size:11px;color:var(--gray400)">'+esc(r.suitable)+'</div>';
+  if(!routesMapInstance)return;
+  routePolylines.forEach(function(p){p.remove();});routePolylines.length=0;
+  /* show loading indicator */
+  document.getElementById('routesMapInfo').insertAdjacentHTML('beforeend','<div id="routeLoading" style="margin-top:6px;font-size:11px;color:var(--lime2)">&#9696; Memuat rute dari OpenStreetMap...</div>');
+  /* build OSRM URL using the route via-points */
+  var coords=r.via.map(function(p){return p[1]+','+p[0];}).join(';');
+  var url='https://router.project-osrm.org/route/v1/foot/'+coords+'?overview=full&geometries=geojson';
+  fetch(url)
+    .then(function(res){return res.json();})
+    .then(function(data){
+      var el=document.getElementById('routeLoading');if(el)el.remove();
+      if(!data.routes||!data.routes[0])return;
+      var geom=data.routes[0].geometry.coordinates;
+      /* OSRM returns [lng,lat], Leaflet wants [lat,lng] */
+      var pts=geom.map(function(c){return[c[1],c[0]];});
+      routePolylines.push(L.polyline(pts,{color:r.color,weight:5,opacity:0.9}).addTo(routesMapInstance));
+      var si=L.divIcon({html:'<div style="background:'+r.color+';color:#fff;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5)">&#9873; START</div>',className:'',iconAnchor:[0,12]});
+      routePolylines.push(L.marker(pts[0],{icon:si}).addTo(routesMapInstance));
+      var ei=L.divIcon({html:'<div style="background:#ef4444;color:#fff;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5)">&#9873; FINISH</div>',className:'',iconAnchor:[0,12]});
+      routePolylines.push(L.marker(pts[pts.length-1],{icon:ei}).addTo(routesMapInstance));
+      routesMapInstance.fitBounds(L.latLngBounds(pts),{padding:[30,30]});
+    })
+    .catch(function(){
+      var el=document.getElementById('routeLoading');if(el)el.remove();
+      showToast('Gagal memuat rute. Cek koneksi internet.','error');
+    });
 }
 function startNav(id){
   var r=ROUTES.filter(function(x){return x.id===id;})[0];if(!r)return;
@@ -1369,6 +1531,56 @@ function clearRouteFilters(){
   renderRoutes();
 }
 
+/* COMMUNITY */
+function renderCommunities(){
+  var area=document.getElementById('commFilterArea')?document.getElementById('commFilterArea').value||'':'';
+  var lev=document.getElementById('commFilterLevel')?document.getElementById('commFilterLevel').value||'':'';
+  var data=COMMUNITIES.slice();
+  if(area) data=data.filter(function(c){return c.area===area;});
+  if(lev) data=data.filter(function(c){return c.level===lev||c.level==='Semua Level';});
+  var grid=document.getElementById('commGrid');if(!grid)return;
+  if(!data.length){grid.innerHTML='<div class="no-results"><p>Tidak ada komunitas sesuai filter.</p></div>';return;}
+  grid.innerHTML=data.map(function(c){
+    return '<div class="comm-card fade-in">'
+      +'<div class="comm-card-top" style="background:linear-gradient(135deg,'+c.color+'22,'+c.color+'08)">'
+      +'<div class="comm-card-avatar" style="background:'+c.color+';box-shadow:0 3px 12px '+c.color+'55">'+c.icon+'</div>'
+      +'<div><div class="comm-card-name">'+esc(c.name)+'</div><div class="comm-card-area">'+esc(c.area)+'</div></div>'
+      +'</div>'
+      +'<div class="comm-card-body">'
+      +'<div class="comm-card-desc">'+esc(c.desc)+'</div>'
+      +'<div class="comm-card-meta">'
+      +'<div class="comm-meta-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><strong>'+c.members+'</strong>&nbsp;<span>anggota</span></div>'
+      +'<div class="comm-meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>'+esc(c.schedule)+'</span></div>'
+      +'<div class="comm-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>'+esc(c.location)+'</span></div>'
+      +'<div class="comm-meta-item"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><strong>'+c.level+'</strong></div>'
+      +'</div>'
+      +'<div class="comm-tags">'+c.tags.map(function(t){return '<span class="comm-tag">'+esc(t)+'</span>';}).join('')+'</div>'
+      +'<button class="btn-join-comm" onclick="openWaModal('+c.id+')">'
+      +'<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.574 3.842 1.565 5.408L2.045 22l4.701-1.489A9.962 9.962 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.952 7.952 0 01-4.065-1.112l-.29-.173-3.013.955.956-2.937-.19-.301A7.955 7.955 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/></svg>'
+      +' Gabung Komunitas'
+      +'</button>'
+      +'</div></div>';
+  }).join('');
+}
+function clearCommFilters(){
+  if(document.getElementById('commFilterArea')) document.getElementById('commFilterArea').value='';
+  if(document.getElementById('commFilterLevel')) document.getElementById('commFilterLevel').value='';
+  renderCommunities();
+}
+function openWaModal(id){
+  var c=COMMUNITIES.filter(function(x){return x.id===id;})[0];if(!c)return;
+  document.getElementById('waCommName').textContent=c.name;
+  document.getElementById('waCommDesc').textContent=c.desc;
+  document.getElementById('waLink').href='https://wa.me/6281294187281?text=Halo%20Admin%2C%20saya%20ingin%20bergabung%20dengan%20komunitas%20'+encodeURIComponent(c.name);
+  document.getElementById('waOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeWaModal(e){
+  if(e&&e.target!==document.getElementById('waOverlay'))return;
+  document.getElementById('waOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 /* TOAST */
 function showToast(msg,type){
   type=type||'success';
@@ -1383,6 +1595,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){
     document.getElementById('modalOverlay').classList.remove('open');
     document.getElementById('addOverlay').classList.remove('open');
+    document.getElementById('waOverlay').classList.remove('open');
     document.body.style.overflow='';
   }
 });
